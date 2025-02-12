@@ -2,8 +2,6 @@ package com.Backend.Model;
 
 import java.util.Date;
 
-import javax.management.relation.Role;
-
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;

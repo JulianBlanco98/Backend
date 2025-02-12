@@ -22,16 +22,12 @@ public class UserController {
 	@GetMapping("/{email}")
 	public ResponseEntity<?> getUserByEmail(@PathVariable String email) {
 		User u = userService.findByEmail(email);
-		if(u != null) {
-			return ResponseEntity.status(200).body(Map.of(
+		
+		return ResponseEntity.status(200).body(Map.of(
 					"message", "Usuario encontrado",
 					"usuario", u));
-		}
-		else {
-			return ResponseEntity.status(404).body(Map.of(
-					"message", "Usuario no encontrado",
-					"email", email));
-		}
+		
+			
+		
 	}
-
 }
