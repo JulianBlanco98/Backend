@@ -15,11 +15,17 @@ public class GlobalHandler {
 		
 		ProblemDetail errorDetail = null;
 		if(exception instanceof EntityNotFoundException) {
-			errorDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(404), exception.getMessage());
+			errorDetail = ProblemDetail.forStatus(HttpStatusCode.valueOf(404));
+			errorDetail.setProperty("message", exception.getMessage());
 		}
-		if(errorDetail == null) {
-			errorDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(500), exception.getMessage());			
+		else if(exception instanceof EmailExistException) {
+			errorDetail = ProblemDetail.forStatus(HttpStatusCode.valueOf(409));
+			errorDetail.setProperty("message", exception.getMessage());
 		}
+		else {
+			errorDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(500), exception.getMessage());						
+		}
+//		if(errorDetail == null) {}
 		return errorDetail;
 	}
 	
