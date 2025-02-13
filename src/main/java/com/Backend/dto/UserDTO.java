@@ -2,6 +2,11 @@ package com.Backend.dto;
 
 import java.util.Date;
 
+import com.Backend.Model.User.Role;
+
+import lombok.Data;
+
+@Data
 public class UserDTO {
 	
 	private String userName;
@@ -10,48 +15,9 @@ public class UserDTO {
 	private String email;
 	private Date dateOfBirth;
 	private String password;
+	private Role rol;
 	
-	public String getUserName() {
-		return userName;
-	}
-	public void setUserName(String userName) {
-		this.userName = userName;
-	}
-	public String getLastName() {
-		return lastName;
-	}
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
-	public String getNickName() {
-		return nickName;
-	}
-	public void setNickName(String nickName) {
-		this.nickName = nickName;
-	}
-	public String getEmail() {
-		return email;
-	}
-	public void setEmail(String email) {
-		this.email = email;
-	}
-	public Date getDateOfBirth() {
-		return dateOfBirth;
-	}
-	public void setDateOfBirth(Date dateOfBirth) {
-		this.dateOfBirth = dateOfBirth;
-	}
-	public String getPassword() {
-		return password;
-	}
-	public void setPassword(String password) {
-		this.password = password;
-	}
-	@Override
-	public String toString() {
-		return "UserDTO [userName=" + userName + ", lastName=" + lastName + ", nickName=" + nickName + ", email="
-				+ email + ", dateOfBirth=" + dateOfBirth + ", password=" + password + "]";
-	}
+	
 	
 	
 	

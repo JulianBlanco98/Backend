@@ -3,21 +3,12 @@ package com.Backend.Model;
 import java.util.Date;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.Data;
+
 
 @Entity
 @Table(name = "users")
-@Getter
-@Setter
-@ToString
-@NoArgsConstructor
-@AllArgsConstructor
-@EqualsAndHashCode
+@Data
 public class User {
 	
 	@Id
@@ -43,6 +34,7 @@ public class User {
 	
 	@Column(name = "password", nullable = false)
 	private String password;
+	
 	public enum Role {
 		USER, ADMIN
 	}
