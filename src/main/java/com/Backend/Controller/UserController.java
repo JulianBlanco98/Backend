@@ -2,7 +2,6 @@ package com.Backend.Controller;
 
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -46,10 +45,10 @@ public class UserController {
 	@PostMapping("/login")
 	public ResponseEntity<Map<String, Object>> loginUser(@RequestBody final LoginUserDTO loginUserDTO) {
 		
-		UserDTO u = this.userService.loginUser(loginUserDTO);
+		final User u = this.userService.loginUser(loginUserDTO);
 		final String jwtToken = this.jwtService.generateToken(u);
-		
-		
-		return null;
+//		System.out.println("Token generado: "+ jwtToken);
+		return ResponseEntity.status(200).body(Map.of("message", "Bienvenido " + u.getNickName() + " !", "token", jwtToken));
+
 	}
 }

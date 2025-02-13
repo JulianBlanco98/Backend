@@ -52,15 +52,15 @@ public class JWTService {
             User userDetails,
             long expiration
     ) {
-    	Map<String, Object> info = new HashMap<>();
-    	info.put("email", userDetails.getEmail());
-    	info.put("nameU", userDetails.getUserName());
-    	info.put("rol", userDetails.getRol().toString());
+    	//Map<String, Object> info = new HashMap<>();
+    	extraClaims.put("email", userDetails.getEmail());
+    	extraClaims.put("nameU", userDetails.getUserName());
+    	extraClaims.put("rol", userDetails.getRol().toString());
         return Jwts
                 .builder()
                 .setClaims(extraClaims)
-//                .setSubject(info)
-                .setHeaderParams(info)
+                .setSubject(userDetails.getUserName())
+                //.setHeaderParams(info)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + expiration))
                 .signWith(getSignInKey(), SignatureAlgorithm.HS256)

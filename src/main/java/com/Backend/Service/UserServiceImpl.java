@@ -54,7 +54,7 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
-	public UserDTO loginUser(LoginUserDTO loginUserDTO) {
+	public User loginUser(LoginUserDTO loginUserDTO) {
 		
 		System.out.println("Entra en el service POST de login");
 		System.out.println("--- "+ loginUserDTO + " ---");
@@ -77,7 +77,7 @@ public class UserServiceImpl implements UserService{
 		
 		// Paso 4(mas adelante): inicializar la tabla de CardCollection si no lo está
 		
-		return this.userMapper.entityToUserDTO(optUser.get());	
+		return optUser.get();	
 		
 	}
 
