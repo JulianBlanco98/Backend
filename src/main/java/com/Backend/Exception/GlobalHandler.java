@@ -5,6 +5,7 @@ import org.springframework.http.ProblemDetail;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 
 @RestControllerAdvice
@@ -18,7 +19,7 @@ public class GlobalHandler {
 			errorDetail = ProblemDetail.forStatus(HttpStatusCode.valueOf(404));
 			errorDetail.setProperty("message", exception.getMessage());
 		}
-		else if(exception instanceof EmailExistException) {
+		else if(exception instanceof EntityExistsException) {
 			errorDetail = ProblemDetail.forStatus(HttpStatusCode.valueOf(409));
 			errorDetail.setProperty("message", exception.getMessage());
 		}

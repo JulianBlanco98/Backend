@@ -10,6 +10,7 @@ import com.Backend.Model.User;
 import com.Backend.Repository.UserRepository;
 import com.Backend.dto.UserDTO;
 
+import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 
 @Service
@@ -40,7 +41,7 @@ public class UserServiceImpl implements UserService{
 		//isPresent() es porque es un Optional<> el método findByEmail()
 		if(userRepository.findByEmail(userDTO.getEmail()).isPresent()) {
 			System.out.println("Entra en la excepcion de que existe el email");
-			throw new EmailExistException(userDTO.getEmail() + " ya está registrado");
+			throw new EntityExistsException(userDTO.getEmail() + " ya está registrado");
 		}
 		
 		User newUser = new User();
