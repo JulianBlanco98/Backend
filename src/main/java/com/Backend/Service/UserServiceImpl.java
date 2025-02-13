@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.Backend.Exception.EmailExistException;
 import com.Backend.Model.User;
 import com.Backend.Repository.UserRepository;
+import com.Backend.dto.LoginUserDTO;
 import com.Backend.dto.UserDTO;
 
 import jakarta.persistence.EntityExistsException;
@@ -46,8 +47,8 @@ public class UserServiceImpl implements UserService{
 		
 		User newUser = new User();
 		newUser.setUserName(userDTO.getUserName());
-		newUser.setLastName(userDTO.getUserName());
-		newUser.setNickName(userDTO.getUserName());
+		newUser.setLastName(userDTO.getLastName());
+		newUser.setNickName(userDTO.getNickName());
 		newUser.setEmail(userDTO.getEmail());
 		newUser.setDateOfBirth(userDTO.getDateOfBirth());
 		
@@ -56,6 +57,17 @@ public class UserServiceImpl implements UserService{
 		newUser.setPassword(pass.encode(userDTO.getPassword())); 
 		
 		return userRepository.save(newUser);
+	}
+
+	@Override
+	public User loginUser(LoginUserDTO loginUserDTO) {
+		
+		System.out.println("Entra en el service POST de login");
+		System.out.println("--- "+ loginUserDTO + " ---");
+		
+		
+		
+		return null;
 	}
 
 }
