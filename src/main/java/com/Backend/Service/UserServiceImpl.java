@@ -45,6 +45,9 @@ public class UserServiceImpl implements UserService{
 		}
 		
 		User newUser = this.userMapper.userDTOToEntityWithOutPassword(userDTO);
+		if(newUser.getRol() == null) {
+			newUser.setRol(User.Role.user);
+		}
 		
 		//Usar Bcrypt como en Node
 		PasswordEncoder pass = new BCryptPasswordEncoder();	

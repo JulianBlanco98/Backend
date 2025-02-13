@@ -30,12 +30,12 @@ public class User {
 	
 	@Column(name = "rol", nullable = false)
 	@Enumerated(EnumType.STRING)
-	private Role rol = Role.USER;
+	private Role rol = Role.user;
 	
 	@Column(name = "password", nullable = false)
 	private String password;
 	
 	public enum Role {
-		USER, ADMIN
+		user, admin
 	}
 }
