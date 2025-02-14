@@ -14,6 +14,7 @@ public class PreConfigServer implements CommandLineRunner{
 		
 		System.out.println("--------------------------------------------------------------------------------------");
 		System.out.println("Inicializar la tabla de pokemon si está vacía");
+		System.out.println("--------------------------------------------------------------------------------------");
 		
 		
 		
