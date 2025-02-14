@@ -19,7 +19,7 @@ import com.Backend.mapper.UserMapper;
 
 
 @SpringBootTest
-class BackendApplicationTests {
+class BackendApplication_UserTests {
 
 	@Autowired
 	private  UserRepository userRepository;
@@ -44,8 +44,7 @@ class BackendApplicationTests {
 		
 		//Recuperar un usuario con email incorrecto
 		String emailIncorrect = "pruebadasdsadasdsad@gmail.com";
-		Optional<User> userDTO = this.userRepository.findByEmail(emailIncorrect);
-		
+		Optional<User> userDTO = this.userRepository.findByEmail(emailIncorrect);		
 		assertFalse(userDTO.isPresent());
 		
 	}
