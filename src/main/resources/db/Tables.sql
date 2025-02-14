@@ -28,26 +28,18 @@ CREATE TABLE pokemons (
     updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB;
 
-CREATE TABLE cards_Related (
-	id INT AUTO_INCREMENT PRIMARY KEY,
-	idPokemon VARCHAR(15) NOT NULL,
-	relatedPokemon VARCHAR(40),
-	FOREIGN KEY (idPokemon) REFERENCES pokemons(idPokemon) ON DELETE CASCADE,
-	FOREIGN KEY (relatedPokemon) REFERENCES pokemons(idPokemon) ON DELETE CASCADE
+CREATE TABLE cardsRelated (
+	id VARCHAR(15) PRIMARY KEY
 ) ENGINE=InnoDB;
 
-CREATE TABLE attacks (
+CREATE TABLE attack (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    idPokemon VARCHAR(15) NOT NULL,
     info VARCHAR(255) NOT NULL,
-    effect VARCHAR(255),
-    FOREIGN KEY (idPokemon) REFERENCES pokemons(idPokemon) ON DELETE CASCADE
+    effect VARCHAR(255)
 ) ENGINE=InnoDB;
 
-CREATE TABLE abilities (
+CREATE TABLE abilitiy (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    idPokemon VARCHAR(15) NOT NULL,
     info VARCHAR(255) NOT NULL,
-    effect VARCHAR(255),
-    FOREIGN KEY (idPokemon) REFERENCES pokemons(idPokemon) ON DELETE CASCADE
+    effect VARCHAR(255)
 ) ENGINE=InnoDB;

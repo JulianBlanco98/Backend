@@ -8,4 +8,5 @@ import com.Backend.Model.Pokemon;
 @Repository
 public interface PokemonRepository extends JpaRepository<Pokemon, String>{
 	
+	
 }
