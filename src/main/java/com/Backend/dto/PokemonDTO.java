@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.Backend.Model.CardsRelated;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
@@ -17,28 +18,35 @@ public class PokemonDTO {
 	private String deck;
 	private String cardType;
 	private String cardColor;
-	private Byte rarity;
+	private int rarity;
 	private String cardStage;
-	private Byte retreatCost;
+	private int retreatCost;
 	private String imageUrl;
-	private Short hpPokemon;
+	private int hpPokemon;
 	private String textCards;
 	private String weakness;
 
 	private List<AbilityDTO> ability;
 	private List<AttackDTO> attack;
-	private List<CardsRelated> cardsrelated;
+	private List<CardsRelatedDTO> cardsrelated;
 
 	@Data
 	public static class AttackDTO {
-		private String info;
-		private String effect;
+	    private int id;
+	    private String info;
+	    private String effect;
 	}
 
 	@Data
 	public static class AbilityDTO {
-		private String info;
-		private String effect;
+	    private int id;
+	    private String info;
+	    private String effect;
+	}
+
+	@Data
+	public static class CardsRelatedDTO {
+	    private String id;
 	}
 
 }

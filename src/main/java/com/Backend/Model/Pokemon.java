@@ -42,19 +42,19 @@ public class Pokemon {
 	private String cardColor;
 	
 	@Column(name = "rarity", nullable = false) // (0 a 10)
-	private Byte rarity;
+	private int rarity;
 	
 	@Column(name = "cardStage", nullable = false)
 	private String cardStage;
 	
 	@Column(name = "retreatCost", nullable = false) // (0 a 4)
-	private Byte retreatCost;
+	private int retreatCost;
 	
 	@Column(name = "imageUrl", nullable = false)
 	private String imageUrl;
 	
 	@Column(name = "hpPokemon", nullable = false) // (0 a 200)
-	private Short hpPokemon;
+	private int hpPokemon;
 	
 	@Column(name = "textCards")
 	private String textCards;
