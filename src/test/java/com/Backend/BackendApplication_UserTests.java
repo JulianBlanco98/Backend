@@ -119,27 +119,24 @@ class BackendApplication_UserTests {
     void testMapUserToDTO() {
         // Verificar que el mapeo de User a UserDTO funciona correctamente
         User user = new User();
-        user.setUserName("prueba test");
-        user.setEmail("test@gmail.com");
+        user.setUserName("userName_test");
+        user.setLastName("lastName_test");
+        user.setNickName("nickName_test");
+        user.setEmail("test@test.com");
         
-        final UserDTO userDTO = userMapper.entityToUserDTO(user);
-        
-        assertEquals(user.getEmail(), userDTO.getEmail());
-        assertEquals(user.getUserName(), userDTO.getUserName());
+        assertEquals(user.getEmail(), this.userDTOTest.getEmail());
+        assertEquals(user.getUserName(), this.userDTOTest.getUserName());
+        assertEquals(user.getLastName(), this.userDTOTest.getLastName());
+        assertEquals(user.getNickName(), this.userDTOTest.getNickName());
     }
 	
 	@Test
 	void testMapUserDTOToEntityWithoutPassword() {
 		
 		// El campo contraseña con este mapper no lo coge, ya que la contraseña se genera con Bcrypt en register
-		UserDTO userDTO = new UserDTO();
-		userDTO.setUserName("prueba test");
-        userDTO.setEmail("test@gmail.com");
-        userDTO.setPassword("1234");
+        final User user = userMapper.userDTOToEntityWithOutPassword(this.userDTOTest);
         
-        final User user = userMapper.userDTOToEntityWithOutPassword(userDTO);
-        
-        assertNotEquals(userDTO.getPassword(), user.getPassword());
+        assertNotEquals(this.userDTOTest.getPassword(), user.getPassword());
         assertNull(user.getPassword());
 	}
 
