@@ -1,12 +1,16 @@
 package com.Backend.runner;
 
+import java.io.InputStream;
 import java.util.List;
 
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 
 import com.Backend.Service.PokemonService;
 import com.Backend.dto.PokemonDTO;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +34,17 @@ public class PreConfigServer implements CommandLineRunner{
 		} catch (EntityNotFoundException e) {
 			System.out.println(e.getMessage());
 			System.out.println("Hora de inicializar datos...");
+			ObjectMapper mapper = new ObjectMapper();
+			try {
+				
+				InputStream input = new ClassPathResource("db/apiJSON_pokemon2.json").getInputStream();
+				List<PokemonDTO> pokemonListJSON = mapper.readValue(input, new TypeReference<List<PokemonDTO>>(){});
+				
+				System.out.println(pokemonListJSON);
+				
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
 		}
 		
 		
