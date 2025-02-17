@@ -32,7 +32,7 @@ public class PokemonController implements PokemonService{
 			throw new EntityNotFoundException("la tabla de Pokémon está vacía");
 		}
 		
-		
+		return null;
 		
 	}
 	
