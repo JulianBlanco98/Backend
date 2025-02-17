@@ -17,25 +17,12 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/pokemonTGC/pokemon")
-public class PokemonController implements PokemonService{
+public class PokemonController{
 	
 	private final PokemonRepository pokemonRepository;
 	
 	private final PokemonMapper pokemonMapper;
 
-	@Override
-	public List<Pokemon> findAll() {
-		
-		
-		List<Pokemon> pokemons = this.pokemonRepository.findAll();
-		if(pokemons.isEmpty()) {
-			throw new EntityNotFoundException("la tabla de Pokémon está vacía");
-		}
-		
-		return null;
-		
-	}
-	
 	
 	
 
