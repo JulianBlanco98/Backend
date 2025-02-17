@@ -24,6 +24,7 @@ import com.Backend.dto.LoginUserDTO;
 import com.Backend.dto.UserDTO;
 import com.Backend.mapper.UserMapper;
 
+import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 
 
@@ -76,6 +77,13 @@ class BackendApplication_UserTests {
 		Optional<User> userDTO = this.userRepository.findByEmail("test2@test.com");		
 		assertFalse(userDTO.isPresent());
 		
+	}
+	
+	@Test
+	void registerUser_EmailExists() {
+		assertThrows(EntityExistsException.class, () -> {
+			this.userService.registerUser(this.userDTOTest);
+		});
 	}
 	
 	@Test
