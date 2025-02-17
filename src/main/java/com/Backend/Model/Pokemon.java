@@ -2,6 +2,7 @@ package com.Backend.Model;
 
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -62,7 +63,7 @@ public class Pokemon {
 	@Column(name = "weakness")
 	private String weakness;
 
-	@ManyToMany
+	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable(
 		name = "pokemon_attack",
 		joinColumns = @JoinColumn(name = "pokemon_id"),
@@ -70,7 +71,7 @@ public class Pokemon {
 	)
 	private List<Attack> attack;
 	
-	@ManyToMany
+	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable(
 			name = "pokemon_ability",
 			joinColumns = @JoinColumn(name = "pokemon_id"),
@@ -78,7 +79,7 @@ public class Pokemon {
 	)
 	private List<Ability> ability;
 	
-	@ManyToMany
+	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable(
 			name = "pokemon_cardsrelated",
 			joinColumns = @JoinColumn(name = "pokemon_id"),

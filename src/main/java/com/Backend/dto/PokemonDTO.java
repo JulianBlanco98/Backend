@@ -2,9 +2,8 @@ package com.Backend.dto;
 
 import java.util.List;
 
-import com.Backend.Model.CardsRelated;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
@@ -28,6 +27,8 @@ public class PokemonDTO {
 
 	private List<AbilityDTO> ability;
 	private List<AttackDTO> attack;
+	
+	@JsonProperty("cardsRelated")
 	private List<CardsRelatedDTO> cardsrelated;
 
 	@Data
