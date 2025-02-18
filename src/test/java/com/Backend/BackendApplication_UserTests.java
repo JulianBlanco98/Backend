@@ -32,7 +32,7 @@ import jakarta.persistence.EntityNotFoundException;
 class BackendApplication_UserTests {
 
 	@Autowired
-	private  UserRepository userRepository;
+	private UserRepository userRepository;
 	
 	@Autowired
 	private UserService userService;

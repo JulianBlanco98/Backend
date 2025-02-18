@@ -1,6 +1,7 @@
 package com.Backend.Model;
 
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -11,14 +12,17 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 @Entity
 @Table(name = "pokemons")
 @Data
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Pokemon {
 
 	@Id
 	@Column(name = "idPokemon", nullable = false, unique = true)
+	@EqualsAndHashCode.Include
 	private String idPokemon;
 	
 	@Column(name = "setId", nullable = false)
@@ -69,7 +73,7 @@ public class Pokemon {
 		joinColumns = @JoinColumn(name = "pokemon_id"),
 		inverseJoinColumns = @JoinColumn(name = "attack_id")
 	)
-	private List<Attack> attack;
+	private Set<Attack> attack;
 	
 	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable(
@@ -77,7 +81,7 @@ public class Pokemon {
 			joinColumns = @JoinColumn(name = "pokemon_id"),
 			inverseJoinColumns = @JoinColumn(name = "ability_id")
 	)
-	private List<Ability> ability;
+	private Set<Ability> ability;
 	
 	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable(
@@ -85,6 +89,6 @@ public class Pokemon {
 			joinColumns = @JoinColumn(name = "pokemon_id"),
 			inverseJoinColumns = @JoinColumn(name = "cardsrelated_id")
 	)
-	private List<CardsRelated> cardsrelated;
+	private Set<CardsRelated> cardsrelated;
 	
 }

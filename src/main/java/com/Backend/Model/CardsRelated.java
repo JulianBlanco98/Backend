@@ -1,6 +1,6 @@
 package com.Backend.Model;
 
-import java.util.List;
+import java.util.Set;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -17,6 +17,6 @@ public class CardsRelated {
     private String id;
 	
 	@ManyToMany(mappedBy = "cardsrelated")
-	private List<Pokemon> pokemons;
+	private Set<Pokemon> pokemons;
 
 }

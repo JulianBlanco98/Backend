@@ -1,6 +1,6 @@
 package com.Backend.Model;
 
-import java.util.List;
+import java.util.Set;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -27,6 +27,6 @@ public class Ability {
 	private String effect;
 	
 	@ManyToMany(mappedBy = "ability")
-	private List<Pokemon> pokemons;
+	private Set<Pokemon> pokemons;
 
 }

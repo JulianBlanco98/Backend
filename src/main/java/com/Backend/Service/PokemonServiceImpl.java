@@ -1,7 +1,6 @@
 package com.Backend.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
@@ -32,9 +31,32 @@ public class PokemonServiceImpl implements PokemonService{
 	
 		List<PokemonDTO> pokemonDTOs = pokemons.stream()
 				.map(this.pokemonMapper::entityToPokemonDTO)
-				.collect(Collectors.toList());
+				.toList();
 		
 		return pokemonDTOs;
 	}
+
+	@Override
+	public List<PokemonDTO> findByPokemonName(String namePokemon) {
+		
+		List<Pokemon> pokemons = this.pokemonRepository.findByPokemonNameContains(namePokemon);
+		if(pokemons.isEmpty()) {
+			throw new EntityNotFoundException("No se encontro ningún pokemon con este nombre: " + namePokemon);
+		}
+		
+	    List<PokemonDTO> pokemonDTOs = pokemons.stream()
+	            .map(this.pokemonMapper::entityToPokemonDTO)
+	            .toList();
+	    return pokemonDTOs;
+		
+	}
+
+	@Override
+	public PokemonDTO findByIdPokemon(String idPokemon) {
+		
+		return this.pokemonMapper.entityToPokemonDTO(this.pokemonRepository.findByIdPokemon(idPokemon).orElseThrow(() -> new EntityNotFoundException("Este id no coincide con ningún pokemon: " +idPokemon)));
+	}
+	
+	
 	
 }
