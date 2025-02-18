@@ -203,48 +203,39 @@ class BackendApplication_PokemonTest {
 	}
 	
 	@Test
-	void findByIdPokemon() {
-		
-		String id_Correct = "A1-284";
+	void findByIdPokemon_IncorrectId() {
 		String id_Incorrect = "A1-287";
-		
-		// caso de Id incorrecto: excepción de entidad no encontrada
 		assertThrows(EntityNotFoundException.class, () -> {
 			this.pokemonService.findByIdPokemon(id_Incorrect);
-		});
-		log.info("pasa el error");
-		System.out.println("Ha pasado la entity not found. Ahora toca recuperar al pokemon");
-		// caso correcto: encuentra por id
-		PokemonDTO pokemonDTO = this.pokemonService.findByIdPokemon(id_Correct);
-		System.out.print("Lo ha encontrado: ");
-		System.out.println(pokemonDTO.toString());
-		
+		});		
+	}
+	
+	@Test
+	void findByIdPokemon() {		
+		String id_Correct = "A1-284";
+		PokemonDTO pokemonDTO = this.pokemonService.findByIdPokemon(id_Correct);		
 		assertNotNull(pokemonDTO);
 		assertEquals(pokemonDTO.getIdPokemon(), id_Correct);
 		assertEquals(pokemonDTO.getPokemonName(), "Charizard ex");
 		assertTrue(pokemonDTO.getHpPokemon() == 180);
 		List<AttackDTO> attacks = pokemonDTO.getAttack();
-		assertTrue(attacks.size() == 2); // 2 ataques
-		
-		
+		assertTrue(attacks.size() == 2); // 2 ataques		
 	}
 	
 	@Test
-	void findByPokemonName() {
-		String nameCorrect = "Charizard";
-		String nameIncorrect = "Charizardsddddddddddddddddds";
-		
+	void findByPokemonName_IncorrectName() {
+		String nameIncorrect = "Incorrect";
 		// caso de Id incorrecto: excepción de entidad no encontrada
 		assertThrows(EntityNotFoundException.class, () -> {
 			this.pokemonService.findByPokemonName(nameIncorrect);
 		});
 		
-		List<PokemonDTO> pokemonsDTO = this.pokemonService.findByPokemonName(nameCorrect);
-		
-		assertNotNull(pokemonsDTO);
-		
-		log.info("Tamaño: " + pokemonsDTO.size());
-		
+	}
+	@Test
+	void findByPokemonName() {
+		String nameCorrect = "Charizard";		
+		List<PokemonDTO> pokemonsDTO = this.pokemonService.findByPokemonName(nameCorrect);		
+		assertNotNull(pokemonsDTO);		
 		assertTrue(pokemonsDTO.size() == 5);
 	}
 		
