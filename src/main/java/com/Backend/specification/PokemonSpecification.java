@@ -33,6 +33,7 @@ public class PokemonSpecification implements Specification<Pokemon> {
                 		deckMap.put("A1", "A1");
                 		deckMap.put("PROMO", "PROMO");
                 		deckMap.put("A2", "A2");
+                		deckMap.put("A1a", "A1a");
                 		
                 		// deck = A1, PROMO, A2 --> buscar por setId
                 		if(deckMap.containsKey(value.toString())) {

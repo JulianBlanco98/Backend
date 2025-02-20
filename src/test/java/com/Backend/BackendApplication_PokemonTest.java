@@ -6,8 +6,10 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.junit.jupiter.api.AfterEach;
@@ -28,6 +30,7 @@ import com.Backend.dto.PokemonDTO.CardsRelatedDTO;
 import com.Backend.mapper.PokemonMapper;
 
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 
 
@@ -238,7 +241,57 @@ class BackendApplication_PokemonTest {
 		assertNotNull(pokemonsDTO);		
 		assertTrue(pokemonsDTO.size() == 5);
 	}
+	
+	@Test
+	@Transactional
+	void findByFiltersRarity() {
 		
+		//6 cartas de estrella
+		Map<String, Object> filters = new HashMap<>();
+		filters.put("rarity", 10);
+		
+		List<PokemonDTO> pokemons = this.pokemonService.findByFilters(filters);
+		assertNotNull(pokemons);
+		assertTrue(pokemons.size() == 6);
+		 
+	}
+		
+	@Test
+	@Transactional
+	void findByFiltersDeck_A1Deck() {
+		Map<String, Object> filters_A1 = new HashMap<>();
+		filters_A1.put("deck", "A1");		
+		List<PokemonDTO> pokemon_A1Deck = this.pokemonService.findByFilters(filters_A1);
+		assertNotNull(pokemon_A1Deck);
+		assertTrue(pokemon_A1Deck.size() == 286);			
+	}
+	@Test
+	@Transactional
+	void findByFiltersDeck_A1aDeck() {
+		Map<String, Object> filters_A1a = new HashMap<>();
+		filters_A1a.put("deck", "A1a");		
+		List<PokemonDTO> pokemon_A1aDeck = this.pokemonService.findByFilters(filters_A1a);
+		assertNotNull(pokemon_A1aDeck);
+		assertTrue(pokemon_A1aDeck.size() == 86);			
+	}
+	@Test
+	@Transactional
+	void findByFiltersDeck_PROMODeck() {
+		Map<String, Object> filters_PROMO = new HashMap<>();
+		filters_PROMO.put("deck", "PROMO");		
+		List<PokemonDTO> pokemon_PROMODeck = this.pokemonService.findByFilters(filters_PROMO);
+		assertNotNull(pokemon_PROMODeck);
+		assertTrue(pokemon_PROMODeck.size() == 41);			
+	}
+	@Test
+	@Transactional
+	void findByFiltersDeck_A2Deck() {
+		Map<String, Object> filters_A2 = new HashMap<>();
+		filters_A2.put("deck", "A2");		
+		List<PokemonDTO> pokemon_A2Deck = this.pokemonService.findByFilters(filters_A2);
+		assertNotNull(pokemon_A2Deck);
+		assertTrue(pokemon_A2Deck.size() == 207);			
+	}
 	
 	
 
