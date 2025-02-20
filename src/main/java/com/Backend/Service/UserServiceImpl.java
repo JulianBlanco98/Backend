@@ -2,9 +2,6 @@ package com.Backend.Service;
 
 import java.util.Optional;
 
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -14,7 +11,6 @@ import com.Backend.Repository.UserRepository;
 import com.Backend.dto.LoginUserDTO;
 import com.Backend.dto.UserDTO;
 import com.Backend.mapper.UserMapper;
-import com.Backend.security.UserDetailsImpl;
 
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
@@ -22,13 +18,12 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Service
-public class UserServiceImpl implements UserService, UserDetailsService{
+public class UserServiceImpl implements UserService{
 	
 	private final UserRepository userRepository;
 	
 	private final UserMapper userMapper;
-	
-	private final PasswordEncoder passwordEncoder;
+	private final PasswordEncoder password;
 	
 	@Override
 	public UserDTO findByEmail(final String email) {
@@ -56,7 +51,7 @@ public class UserServiceImpl implements UserService, UserDetailsService{
 		}
 		
 		//Usar Bcrypt como en Node
-		newUser.setPassword(this.passwordEncoder.encode(userDTO.getPassword())); 
+		newUser.setPassword(this.password.encode(userDTO.getPassword())); 
 		
 		return this.userMapper.entityToUserDTO(this.userRepository.save(newUser));
 	}
@@ -87,13 +82,6 @@ public class UserServiceImpl implements UserService, UserDetailsService{
 		
 		return optUser.get();	
 		
-	}
-
-	@Override
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		// TODO Auto-generated method stub
-		User user = this.userMapper.userDTOToEntity(this.findByEmail(username));
-		return new UserDetailsImpl(user);
 	}
 
 }

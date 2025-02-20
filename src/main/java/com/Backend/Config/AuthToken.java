@@ -5,15 +5,14 @@ import java.io.IOException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-import org.springframework.web.servlet.HandlerExceptionResolver;
 
+import com.Backend.Exception.InvalidTokenException;
+import com.Backend.Exception.NoTokenException;
 import com.Backend.Service.JWTService;
-import com.Backend.Service.UserService;
-import com.Backend.Service.UserServiceImpl;
-import com.Backend.mapper.UserMapper;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -27,8 +26,7 @@ public class AuthToken extends OncePerRequestFilter{
 
 //	private final HandlerExceptionResolver handlerExceptionResolver;
 	private final JWTService jwtService;
-	private final UserServiceImpl userService;
-	private final UserMapper userMapper;
+	private final UserDetailsService userService;
 	
 	
 	@Override
@@ -40,12 +38,17 @@ public class AuthToken extends OncePerRequestFilter{
 		
 		// Next (si no tiene cabecera, sigue la consulta)
 		if(authHeader == null || !authHeader.startsWith("Bearer ")) {
-			filterChain.doFilter(request, response);
-			return;
+			/*filterChain.doFilter(request, response);
+			return;*/
+	        throw new NoTokenException("Token no existe");
 		}
 		
 		// Recuperar a partir de "Bearer "
 		token = authHeader.substring(7);
+		
+		if (token.isBlank()) {
+	        throw new NoTokenException("Token no existe");
+	    }
 		
 		try {
 			userEmail = this.jwtService.extractUsername(token);
@@ -59,13 +62,14 @@ public class AuthToken extends OncePerRequestFilter{
 				
 					SecurityContextHolder.getContext().setAuthentication(authToken);
 				}
+				else {
+					throw new InvalidTokenException("Token invalido o expirado");
+				}
 			}
 			
 			
 		} catch (Exception e) {
-			response.setStatus(401);
-			response.getWriter().write("Invalid or expired token");
-			return;
+			throw new InvalidTokenException("Token invalido o expirado");
 		}
 		
 		filterChain.doFilter(request, response);

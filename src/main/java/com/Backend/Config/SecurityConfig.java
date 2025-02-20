@@ -13,6 +13,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import com.Backend.Repository.UserRepository;
+import com.Backend.Service.UserDetailsServiceImpl;
+
 import lombok.RequiredArgsConstructor;
 
 
@@ -21,7 +24,7 @@ import lombok.RequiredArgsConstructor;
 public class SecurityConfig {
 	
 	private final AuthToken authToken;
-	private final UserDetailsService userDetailsService;
+	
 
 	@Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -36,13 +39,14 @@ public class SecurityConfig {
                 .build();
     }
     
-    @Bean
-    public AuthenticationManager authenticationManager() {
-        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-        authProvider.setUserDetailsService(userDetailsService);
-        authProvider.setPasswordEncoder(passwordEncoder());
-        return new ProviderManager(authProvider);
-    }
+	@Bean
+	public AuthenticationManager authenticationManager(UserDetailsService userDetailsService) {
+	    DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+	    authProvider.setUserDetailsService(userDetailsService);
+	    authProvider.setPasswordEncoder(passwordEncoder());
+	    return new ProviderManager(authProvider);
+	}
+
 
     @Bean
     public PasswordEncoder passwordEncoder() {
