@@ -32,11 +32,10 @@ public class PokemonServiceImpl implements PokemonService{
 			throw new EntityNotFoundException("la tabla de Pokémon está vacía");
 		}
 	
-		List<PokemonDTO> pokemonDTOs = pokemons.stream()
+		return pokemons.stream()
 				.map(this.pokemonMapper::entityToPokemonDTO)
 				.toList();
 		
-		return pokemonDTOs;
 	}
 
 	@Override

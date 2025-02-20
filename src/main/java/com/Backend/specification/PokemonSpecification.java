@@ -25,12 +25,18 @@ public class PokemonSpecification implements Specification<Pokemon> {
 
             if (value != null && !value.toString().isEmpty()) {
                 switch (key) {
-                    case "setId": //buscar por setId
-                        predicate = cb.and(predicate, cb.equal(root.get("setId"), value));
+                    case "pokemonName": //buscar por pokemonName
+                        predicate = cb.and(predicate, cb.equal(root.get("pokemonName"), value));
                         break;
-                    case "cardType": //buscar por cadrType
+                    case "cardType": //buscar por cardType
                         predicate = cb.and(predicate, cb.equal(root.get("cardType"), value));
                         break;
+                    case "cardColor": //buscar por cardColor
+                    	predicate = cb.and(predicate, cb.equal(root.get("cardColor"), value));
+                    	break;
+                    case "rarity": //buscar por rarity (ocject a number)
+                    	predicate = cb.and(predicate, cb.equal(root.get("rarity"), Integer.parseInt(value.toString())));
+                    	break;
                     case "sortOrder": // Aplicar ordenación
                         String sortOrder = value.toString().toUpperCase();
                         if ("ASC".equals(sortOrder)) {
