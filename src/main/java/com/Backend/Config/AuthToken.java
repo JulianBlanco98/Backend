@@ -36,7 +36,9 @@ public class AuthToken extends OncePerRequestFilter{
 		final String token;
 		final String userEmail;
 		
-		// Next (si no tiene cabecera, sigue la consulta)
+		try {
+			
+		// Next (si no tiene cabecera, 401
 		if(authHeader == null || !authHeader.startsWith("Bearer ")) {
 			/*filterChain.doFilter(request, response);
 			return;*/
@@ -50,7 +52,6 @@ public class AuthToken extends OncePerRequestFilter{
 	        throw new NoTokenException("Token no existe");
 	    }
 		
-		try {
 			userEmail = this.jwtService.extractUsername(token);
 			System.out.println("Email en autenticacion: " + userEmail);
 			if(userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
@@ -67,12 +68,18 @@ public class AuthToken extends OncePerRequestFilter{
 				}
 			}
 			
+			filterChain.doFilter(request, response);
 			
-		} catch (Exception e) {
-			throw new InvalidTokenException("Token invalido o expirado");
-		}
+		} catch (NoTokenException e) {
+	        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED); // 401
+	        response.setContentType("application/json");
+	        response.getWriter().write("{\"error\": \"NoTokenException\", \"message\": \"" + e.getMessage() + "\"}");
+	    } catch (InvalidTokenException e) {
+	        response.setStatus(HttpServletResponse.SC_FORBIDDEN); // 403
+	        response.setContentType("application/json");
+	        response.getWriter().write("{\"error\": \"InvalidTokenException\", \"message\": \"" + e.getMessage() + "\"}");
+	    }
 		
-		filterChain.doFilter(request, response);
 		
 	}
 

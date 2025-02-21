@@ -27,14 +27,6 @@ public class GlobalHandler {
 			errorDetail = ProblemDetail.forStatus(HttpStatusCode.valueOf(400));
 			errorDetail.setProperty("message", exception.getMessage());			
 		}
-		else if(exception instanceof NoTokenException) {
-			errorDetail = ProblemDetail.forStatus(HttpStatusCode.valueOf(401));
-			errorDetail.setProperty("message", exception.getMessage());			
-		}
-		else if(exception instanceof InvalidTokenException) {
-			errorDetail = ProblemDetail.forStatus(HttpStatusCode.valueOf(403));
-			errorDetail.setProperty("message", exception.getMessage());			
-		}
 		else {
 			errorDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(500), exception.getMessage());						
 		}
