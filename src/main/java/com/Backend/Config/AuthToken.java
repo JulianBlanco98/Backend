@@ -2,6 +2,7 @@ package com.Backend.Config;
 
 import java.io.IOException;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -31,6 +32,14 @@ public class AuthToken extends OncePerRequestFilter{
 	
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+		
+		
+		// Excluir las rutas específicas
+	    String path = request.getRequestURI();
+	    if (path.equals("/pokemonTGC/users/login") || path.equals("/pokemonTGC/users")) {
+	        filterChain.doFilter(request, response); // Dejar pasar sin filtro de autenticación
+	        return;
+	    }
 		
 		final String authHeader = request.getHeader("authorization"); //ver si mayusculas o no
 		final String token;
