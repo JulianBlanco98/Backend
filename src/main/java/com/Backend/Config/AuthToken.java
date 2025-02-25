@@ -62,7 +62,7 @@ public class AuthToken extends OncePerRequestFilter{
 	    }
 		
 			userEmail = this.jwtService.extractUsername(token);
-			System.out.println("Email en autenticacion: " + userEmail);
+//			System.out.println("Email en autenticacion: " + userEmail);
 			if(userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 				UserDetails userDetails = this.userService.loadUserByUsername(userEmail);
 				

@@ -10,7 +10,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -45,7 +44,6 @@ class BackendApplication_PokemonTest {
 	private PokemonService pokemonService;
 	
 	private PokemonDTO pokemonDTO_Test;
-	private PokemonDTO pokemonDTO_BD;
 	
 	@BeforeEach
 	void setUp() {
