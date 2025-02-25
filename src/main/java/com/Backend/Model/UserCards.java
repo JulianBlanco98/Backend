@@ -3,6 +3,8 @@ package com.Backend.Model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -12,27 +14,32 @@ import jakarta.persistence.Table;
 import lombok.Data;
 
 
-@Table(name = "card_user_collection_detail")
+@Table(name = "user_cards")
 @Data
 @Entity
-public class CardUserCollectionDetail {
+public class UserCards {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
 	@ManyToOne
-	@JoinColumn(name = "collection_id", nullable = false)
+	@JoinColumn(name = "user_collection_id", nullable = false)
 	private CardUserCollection cardUserCollection;
 	
 	@ManyToOne
-	@JoinColumn(name = "pokemon_id", nullable = false)
+	@JoinColumn(name = "cardId", nullable = false)
 	private Pokemon pokemon;
 	
-	@Column(name= "has_the_card", nullable = false)
+	@Enumerated(EnumType.STRING)
+	@Column(nullable = false)
+	private CardCategory category;
+	
+	@Column(name = "hasTheCard", nullable = false)
 	private boolean hasTheCard;
 	
-	@Column(name = "collection_type", nullable = false)
-	private String collectionType; // Genetic, PROMO, Mythical, Smackdown
 	
+	public static enum CardCategory {
+		Genetic, PROMO, Mythical, Smackdown
+	}
 	
 }

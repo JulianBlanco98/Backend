@@ -50,12 +50,12 @@ CREATE TABLE card_user_collection (
     FOREIGN KEY (user_email) REFERENCES users(email) ON DELETE CASCADE
 )ENGINE=InnoDB;
 
-CREATE TABLE card_user_collection_detail (
+CREATE TABLE user_cards (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    collection_id BIGINT NOT NULL,
-    pokemon_id VARCHAR(255) NOT NULL,
-    has_the_card BOOLEAN NOT NULL DEFAULT FALSE,
-    collection_type VARCHAR(50) NOT NULL,
-    FOREIGN KEY (collection_id) REFERENCES card_user_collection(id) ON DELETE CASCADE,
-    FOREIGN KEY (pokemon_id) REFERENCES pokemons(idPokemon) ON DELETE CASCADE
-)ENGINE=InnoDB;
+    user_collection_id BIGINT NOT NULL,
+    cardId VARCHAR(15) NOT NULL,
+    category ENUM('Genetic', 'PROMO', 'Mythical', 'Smackdown') NOT NULL,
+    hasTheCard BOOLEAN DEFAULT FALSE,
+    FOREIGN KEY (user_collection_id) REFERENCES card_user_collection(id) ON DELETE CASCADE,
+    FOREIGN KEY (cardId) REFERENCES pokemons(idPokemon) ON DELETE CASCADE
+) ENGINE=InnoDB;

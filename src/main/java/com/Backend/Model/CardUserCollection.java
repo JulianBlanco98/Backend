@@ -27,7 +27,7 @@ public class CardUserCollection {
 	private User user;
 	
 	@OneToMany(mappedBy = "cardUserCollection", cascade = CascadeType.ALL, orphanRemoval = true)
-	private Set<CardUserCollectionDetail> cards;
+	private Set<UserCards> cards;
 	
 	
 }

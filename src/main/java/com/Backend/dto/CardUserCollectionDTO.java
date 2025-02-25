@@ -9,6 +9,6 @@ public class CardUserCollectionDTO {
 
 	private Long id;
 	private String userEmail;
-	private List<CardUserCollectionDeatilsDTO> cards;
+	private List<UserCardsDTO> cards;
 	
 }

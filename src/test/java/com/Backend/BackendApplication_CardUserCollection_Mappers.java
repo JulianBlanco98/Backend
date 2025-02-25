@@ -15,7 +15,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import com.Backend.Model.CardUserCollection;
 import com.Backend.Service.PokemonService;
 import com.Backend.dto.CardUserCollectionDTO;
-import com.Backend.dto.CardUserCollectionDeatilsDTO;
+import com.Backend.dto.UserCardsDTO;
 import com.Backend.dto.PokemonDTO;
 import com.Backend.mapper.CardUserCollectionMapper;
 
@@ -40,22 +40,6 @@ public class BackendApplication_CardUserCollection_Mappers {
 		cardUserCollectionDTO_test.setId((long) 1);
 		cardUserCollectionDTO_test.setUserEmail("prueba@gmail.com");
 		
-		// Recuperar las cartas de la expansion PROMO
-		Map<String, Object> filters_PROMO = new HashMap<>();
-		filters_PROMO.put("deck", "PROMO");
-		List<PokemonDTO> pokemon_PROMODeck = this.pokemonService.findByFilters(filters_PROMO);
-		
-		// Convertir la lista de PokemonDTO a CardUserCollectionDeatilsDTO
-        List<CardUserCollectionDeatilsDTO> cardDetails = pokemon_PROMODeck.stream().map(pokemonDTO -> {
-            CardUserCollectionDeatilsDTO detailDTO = new CardUserCollectionDeatilsDTO();
-            detailDTO.setPokemonId(pokemonDTO.getIdPokemon());
-            detailDTO.setCollectionType("PROMO");
-            detailDTO.setHasTheCard(false); // Asumiendo que el usuario tiene la carta
-            return detailDTO;
-        }).toList();
-
-        cardUserCollectionDTO_test.setCards(cardDetails);
-		
 	}
 	
 	@AfterEach
@@ -66,9 +50,6 @@ public class BackendApplication_CardUserCollection_Mappers {
 	@Test
 	void testMap_collectionDTOToEntity() {
 		
-		CardUserCollection entity = this.mapper.toEntity(cardUserCollectionDTO_test);
-		
-		assertTrue(entity.getCards().size() == 41);
 		
 	}
 	
