@@ -31,8 +31,7 @@ public class CardUserCollectionController {
 		
 		// 1. Recuperar el token para obtener el email del usuario
 		String userEmail = userDetails.getUsername();
-		log.info("Email del usuario: " + userEmail);
-		log.info("CollectionSet: " + collectionSet);
+		log.info("Verificando si la expansión {} está inicializada para el usuario {}", collectionSet, userEmail);
 		
 		
 		// 2. Ver si está inicalizado o no
