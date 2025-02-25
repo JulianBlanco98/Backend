@@ -6,7 +6,7 @@ import lombok.Data;
 public class CardUserCollectionDeatilsDTO {
 	private Long id;
 	private Long collectionId;
-	private Long pokemonId;
+	private String pokemonId;
 	private boolean hasTheCard;
 	private String collectionType;
 	

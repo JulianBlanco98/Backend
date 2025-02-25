@@ -1,16 +1,18 @@
 package com.Backend;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.Backend.Repository.PokemonRepository;
+import com.Backend.Model.CardUserCollection;
 import com.Backend.Service.PokemonService;
 import com.Backend.dto.CardUserCollectionDTO;
 import com.Backend.dto.CardUserCollectionDeatilsDTO;
@@ -26,8 +28,6 @@ public class BackendApplication_CardUserCollection_Mappers {
 	@Autowired
 	private CardUserCollectionMapper mapper;
 	
-	@Autowired
-	private PokemonRepository pokemonRepository;
 	
 	private CardUserCollectionDTO cardUserCollectionDTO_test;
 
@@ -50,18 +50,25 @@ public class BackendApplication_CardUserCollection_Mappers {
             CardUserCollectionDeatilsDTO detailDTO = new CardUserCollectionDeatilsDTO();
             detailDTO.setPokemonId(pokemonDTO.getIdPokemon());
             detailDTO.setCollectionType("PROMO");
-            detailDTO.setHasTheCard(true); // Asumiendo que el usuario tiene la carta
+            detailDTO.setHasTheCard(false); // Asumiendo que el usuario tiene la carta
             return detailDTO;
-        }).collect(Collectors.toList());
+        }).toList();
 
         cardUserCollectionDTO_test.setCards(cardDetails);
-		
-		cardUserCollectionDTO_test.setCards(null);
 		
 	}
 	
 	@AfterEach
 	void tearDown() {
+		
+	}
+	
+	@Test
+	void testMap_collectionDTOToEntity() {
+		
+		CardUserCollection entity = this.mapper.toEntity(cardUserCollectionDTO_test);
+		
+		assertTrue(entity.getCards().size() == 41);
 		
 	}
 	
