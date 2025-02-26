@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.Backend.Model.Pokemon;
 import com.Backend.Repository.PokemonRepository;
+import com.Backend.dto.PokemonCollectionDTO;
 import com.Backend.dto.PokemonDTO;
 import com.Backend.mapper.PokemonMapper;
 import com.Backend.specification.PokemonSpecification;
@@ -70,6 +71,18 @@ public class PokemonServiceImpl implements PokemonService{
 		return pokemons.stream()
 				.map(pokemonMapper::entityToPokemonDTO)
 				.toList();	
+	}
+
+	@Override
+	public PokemonCollectionDTO findByIdPokemonCollection(String idPokemon) {
+		
+		
+		Pokemon pokemon = this.pokemonRepository.findByIdPokemon(idPokemon)
+	            .orElseThrow(() -> new EntityNotFoundException("Este id no coincide con ningún pokemon: " + idPokemon));
+		
+//		return this.pokemonMapper.toEntityCollection(this.pokemonRepository.findByIdPokemon(idPokemon).orElseThrow(() -> new EntityNotFoundException("Este id no coincide con ningún pokemon: " +idPokemon)));
+		
+		return this.pokemonMapper.toPokemonCollectionDTO(pokemon);
 	}
 	
 	

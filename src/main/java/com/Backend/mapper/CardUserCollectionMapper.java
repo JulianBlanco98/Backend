@@ -5,11 +5,9 @@ import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
 import com.Backend.Model.CardUserCollection;
-import com.Backend.Model.UserCards;
 import com.Backend.dto.CardUserCollectionDTO;
-import com.Backend.dto.UserCardsDTO;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = UserCardsMapper.class)
 public interface CardUserCollectionMapper {
 	
 	CardUserCollectionMapper INSTANCE = Mappers.getMapper(CardUserCollectionMapper.class);

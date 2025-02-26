@@ -15,14 +15,14 @@ import com.Backend.Service.CardUserCollectionService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-
+/*
 @Slf4j
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/pokemonTGC/collection")
 public class CardUserCollectionController {
 	
-	private final CardUserCollectionService cardUserCollectionService;
+	/*private final CardUserCollectionService cardUserCollectionService;
 	
 	
 	@GetMapping("/{collectionSet}/initialized")
@@ -45,4 +45,4 @@ public class CardUserCollectionController {
 		
 	}
 
-}
+}*/
