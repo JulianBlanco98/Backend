@@ -15,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.Backend.Model.CardUserCollection;
-import com.Backend.Model.Pokemon;
 import com.Backend.Model.UserCards;
 import com.Backend.Model.UserCards.CardCategory;
 import com.Backend.Service.PokemonService;
@@ -78,17 +77,19 @@ public class BackendApplication_CardUserCollection_Mappers {
 		PokemonCollectionDTO pokemon1 = this.pokemonService.findByIdPokemonCollection("A1-001");
 		PokemonCollectionDTO pokemon2 = this.pokemonService.findByIdPokemonCollection("A1-004");
 		
-		
+		// Carta 1
 		UserCards userCard1 = new UserCards();
         userCard1.setId(1L);
         userCard1.setPokemon(this.pokemonMapper.toEntityCollection(pokemon1));
         userCard1.setCategory(CardCategory.Genetic);
         userCard1.setHasTheCard(true);
+        
+        // Carta 2
         UserCards userCard2 = new UserCards();
-        userCard1.setId(2L);
-        userCard1.setPokemon(this.pokemonMapper.toEntityCollection(pokemon2));
-        userCard1.setCategory(CardCategory.Genetic);
-        userCard1.setHasTheCard(true);
+        userCard2.setId(2L);
+        userCard2.setPokemon(this.pokemonMapper.toEntityCollection(pokemon2));
+        userCard2.setCategory(CardCategory.Genetic);
+        userCard2.setHasTheCard(true);
 
         Set<UserCards> userCardsEntities = new HashSet<>();
         userCardsEntities.add(userCard1);
@@ -125,8 +126,8 @@ public class BackendApplication_CardUserCollection_Mappers {
 		assertEquals(cardUserCollection_test.getId(), dto.getId());
 //		assertEquals(cardUserCollection_test.getUser().getEmail(), dto.getUserEmail());
 		
-		System.out.println("Tamaño lista test: " +cardUserCollection_test.getCards().size());
-		System.out.println("Tamaño lista dto: " +dto.getCards().size());
+//		System.out.println("lista cartas test: " +cardUserCollection_test.getCards().toString());
+//		System.out.println("lista cartas dto: " +dto.getCards().toString());
 		
 		assertEquals(cardUserCollection_test.getCards().size(), dto.getCards().size());	
 		
@@ -136,6 +137,26 @@ public class BackendApplication_CardUserCollection_Mappers {
 		assertEquals(dto.getCards().get(0).getCardId(), "A1-001");
 		assertEquals(dto.getCards().get(1).getCardId(), "A1-004");
 				
+	}
+	
+	@Test
+	void testMap_userCardsDTOtoEntity() {
+		UserCards entity = this.userCardsMapper.toEntity(this.cardUserCollectionDTO_test.getCards().get(0));
+		assertNotNull(entity);
+		assertEquals(this.cardUserCollectionDTO_test.getCards().get(0).getId(), entity.getId());
+		assertEquals(this.cardUserCollectionDTO_test.getCards().get(0).getCardId(), entity.getPokemon().getIdPokemon());
+		assertEquals(this.cardUserCollectionDTO_test.getCards().get(0).getCategory().toString(), "Genetic");
+
+	}
+	
+	@Test
+	void testMap_userCardstoDTO() {
+		UserCardsDTO dto = this.userCardsMapper.toDTO(this.cardUserCollection_test.getCards().iterator().next());
+		assertNotNull(dto);
+		assertEquals(this.cardUserCollection_test.getCards().iterator().next().getId(), dto.getId());
+		assertEquals(this.cardUserCollection_test.getCards().iterator().next().getPokemon().getIdPokemon(), dto.getCardId());
+		assertEquals(this.cardUserCollection_test.getCards().iterator().next().getCategory().toString(), "Genetic");
+		
 	}
 	
 }
