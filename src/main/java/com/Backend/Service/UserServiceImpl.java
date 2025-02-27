@@ -6,7 +6,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.Backend.Model.CardUserCollection;
 import com.Backend.Model.User;
+import com.Backend.Repository.CardUserCollectionRepository;
 import com.Backend.Repository.UserRepository;
 import com.Backend.dto.LoginUserDTO;
 import com.Backend.dto.UserDTO;
@@ -21,7 +23,7 @@ import lombok.RequiredArgsConstructor;
 public class UserServiceImpl implements UserService{
 	
 	private final UserRepository userRepository;
-	
+	private final CardUserCollectionRepository cardUserCollectionRepository;
 	private final UserMapper userMapper;
 	private final PasswordEncoder password;
 	
@@ -79,6 +81,18 @@ public class UserServiceImpl implements UserService{
 		System.out.println("la contraseña coincide");
 		
 		// Paso 4(mas adelante): inicializar la tabla de CardCollection si no lo está
+		
+		Optional<CardUserCollection> optUserCollection = this.cardUserCollectionRepository.findByUser(optUser.get());
+		
+		// Si no está presente, creo una
+		if(!optUserCollection.isPresent()) {
+			
+			CardUserCollection addCardUserCollection = new CardUserCollection();
+			addCardUserCollection.setUser(optUser.get());
+			
+			this.cardUserCollectionRepository.save(addCardUserCollection);
+		}
+		
 		
 		return optUser.get();	
 		

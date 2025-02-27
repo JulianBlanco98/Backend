@@ -9,6 +9,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import com.Backend.Model.Pokemon;
+import com.Backend.dto.PokemonCollectionDTO;
+
 import java.util.List;
 
 
