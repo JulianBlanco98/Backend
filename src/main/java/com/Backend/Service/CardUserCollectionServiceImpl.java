@@ -14,6 +14,7 @@ import com.Backend.Repository.CardUserCollectionRepository;
 import com.Backend.Repository.PokemonRepository;
 import com.Backend.Repository.UserCardsRepository;
 import com.Backend.Repository.UserRepository;
+import com.Backend.dto.ListCardsUserCardsUpdateDTO;
 import com.Backend.dto.PokemonCollectionDTO;
 import com.Backend.dto.UserCardsDTO;
 import com.Backend.mapper.PokemonMapper;
@@ -92,19 +93,37 @@ public class CardUserCollectionServiceImpl implements CardUserCollectionService{
 		log.info("Se encontraron {} cartas en la expansión {}", userCardsList.size(), collectionSet);
 		
 		List<PokemonCollectionDTO> pokemonsDTO = userCardsList.stream()
-				.map(userCard -> this.pokemonMapper.toPokemonCollectionDTO(userCard.getPokemon())).toList();
+			    .map(userCard -> {
+			        PokemonCollectionDTO dto = this.pokemonMapper.toPokemonCollectionDTO(userCard.getPokemon());
+			        dto.setHasTheCard(userCard.isHasTheCard()); // añadir el boolean para el model del front
+			        return dto;
+			    }).toList();
+
 				
 		return pokemonsDTO;
 		
 	}
 	
 	@Override
-	public String updateUserCollection(String userEmail, String collectionSet) {
+	public String updateUserCollection(String userEmail, String collectionSet, ListCardsUserCardsUpdateDTO updatedCards) {
 		
+		User user = this.getUserByEmail(userEmail);		
+		CardUserCollection cardUserCollection = this.getUserCollection(user);
+		List<UserCards> userCardsList = this.userCardsRepository.findByCardUserCollectionAndCategory(cardUserCollection, getCategory(collectionSet));
+		if (userCardsList.isEmpty()) {
+			throw new EntityNotFoundException("No hay cartas en la categoría " + collectionSet + " para este usuario.");
+		}
 		
+		for(UserCardsDTO updatedCard: updatedCards.getCards()) {
+			userCardsList.stream()
+				.filter(userCard -> userCard.getPokemon().getIdPokemon().equals(updatedCard.getCardId()))
+				.findFirst()
+				.ifPresent(userCard -> userCard.setHasTheCard(updatedCard.isHasTheCard()));
+		}
 		
+		this.userCardsRepository.saveAll(userCardsList);
 		
-		return null;
+		return "Coleccion guardada correctamente";
 	}
 	
 	private User getUserByEmail(String userEmail) {

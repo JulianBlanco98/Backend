@@ -32,7 +32,7 @@ public class UserController {
 	@GetMapping("/{email}")
 	public ResponseEntity<Map<String, Object>> getUserByEmail(@PathVariable final String email) {
 		
-		final UserDTO u = userService.findByEmail(email);
+		final UserDTO u = this.userService.findByEmail(email);
 
 		return ResponseEntity.status(200).body(Map.of("message", "Usuario encontrado", "usuario", u));
 	}
@@ -40,7 +40,7 @@ public class UserController {
 	@PostMapping
 	public ResponseEntity<Map<String, Object>> registerUser(@RequestBody UserDTO userDTO) {
 
-		final UserDTO u = userService.registerUser(userDTO);
+		final UserDTO u = this.userService.registerUser(userDTO);
 		
 		return ResponseEntity.status(201).body(Map.of("message", "Usuario registro con éxito", "usuario", u));
 	}
