@@ -189,11 +189,9 @@ public class BackendApplication_CardUserCollection_Test {
 		assertTrue(promoCards.size() >= 6);
 		
 		// 5 primeras a true
-		promoCards.get(0).setHasTheCard(true);
-		promoCards.get(1).setHasTheCard(true);
-		promoCards.get(2).setHasTheCard(true);
-		promoCards.get(3).setHasTheCard(true);
-		promoCards.get(4).setHasTheCard(true);
+		for(int i=0; i< 5; i++) {
+			promoCards.get(i).setHasTheCard(true);
+		}
 		
 		List<UserCardsDTO> promoCardsDTO = promoCards.stream()
 				.map(this.userCardsMapper::toDTO)
@@ -206,14 +204,10 @@ public class BackendApplication_CardUserCollection_Test {
 		List<UserCards> updatedPromoCards = this.userCardsRepository.findByCardUserCollectionAndCategory(collection_test, CardCategory.PROMO);
 		
 		assertTrue(promoCards.size() >= 6);
-		
-		
-		assertTrue(updatedPromoCards.get(0).isHasTheCard());
-		assertTrue(updatedPromoCards.get(1).isHasTheCard());
-		assertTrue(updatedPromoCards.get(2).isHasTheCard());
-		assertTrue(updatedPromoCards.get(3).isHasTheCard());
-		assertTrue(updatedPromoCards.get(4).isHasTheCard());
-		assertTrue(!updatedPromoCards.get(5).isHasTheCard());		
+		for(int i=0; i< 5; i++) {
+			assertTrue(updatedPromoCards.get(i).isHasTheCard());
+		}
+		assertTrue(!updatedPromoCards.get(5).isHasTheCard(), "La carta 5 tiene que ser falsa");		
 		
 	}
 	
