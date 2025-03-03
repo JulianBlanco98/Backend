@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,6 +16,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import com.Backend.Model.CardUserCollection;
 import com.Backend.Model.Pokemon;
+import com.Backend.Model.User;
 import com.Backend.Model.UserCards;
 import com.Backend.Model.UserCards.CardCategory;
 import com.Backend.Model.User.Role;
@@ -24,8 +26,11 @@ import com.Backend.Repository.UserCardsRepository;
 import com.Backend.Repository.UserRepository;
 import com.Backend.Service.CardUserCollectionService;
 import com.Backend.Service.UserService;
+import com.Backend.dto.ListCardsUserCardsUpdateDTO;
 import com.Backend.dto.PokemonCollectionDTO;
+import com.Backend.dto.UserCardsDTO;
 import com.Backend.dto.UserDTO;
+import com.Backend.mapper.UserCardsMapper;
 import com.Backend.mapper.UserMapper;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -39,6 +44,7 @@ public class BackendApplication_CardUserCollection_Test {
 	@Autowired private CardUserCollectionService cardUserCollectionService;
 	@Autowired private CardUserCollectionRepository cardUserCollectionRepository;
 	@Autowired private UserCardsRepository userCardsRepository;
+	@Autowired private UserCardsMapper userCardsMapper;
 	
 	// Usuarios
 	@Autowired private UserService userService;
@@ -55,7 +61,12 @@ public class BackendApplication_CardUserCollection_Test {
 	@BeforeEach
 	void setUp() {
 		
-		// Crear un usuario y registrarlo en la BD
+		// Crear un usuario y registrarlo en la BD, pero comprobar primero que no existe en la BD (problemas)
+		Optional<User> isUser = this.userRepository.findByEmail("test@test.com");
+		if(isUser.isPresent()) {
+			this.userRepository.delete(isUser.get());
+		}
+		
 		this.userDTOTest = new UserDTO();
 		this.userDTOTest.setEmail("test@test.com");
 		this.userDTOTest.setUserName("userName_test");
@@ -153,11 +164,41 @@ public class BackendApplication_CardUserCollection_Test {
 	void test_initCollection() {
 		
 		this.cardUserCollectionService.initializeCollection("test@test.com", "Mythical");
-		
 		List<PokemonCollectionDTO> mythicalCards = this.cardUserCollectionService.getUserExpansionCards("test@test.com", "Mythical");
 		
 		assertNotNull(mythicalCards);
 		assertTrue(mythicalCards.size() == 86);
+		
+	}
+	
+	@Test
+	void test_updateCollection() {
+		ListCardsUserCardsUpdateDTO updatedCards = new ListCardsUserCardsUpdateDTO();
+		List<UserCards> promoCards = this.userCardsRepository.findByCardUserCollectionAndCategory(collection_test, CardCategory.PROMO);
+		
+		// 5 primeras a true
+		promoCards.get(0).setHasTheCard(true);
+		promoCards.get(1).setHasTheCard(true);
+		promoCards.get(2).setHasTheCard(true);
+		promoCards.get(3).setHasTheCard(true);
+		promoCards.get(4).setHasTheCard(true);
+		
+		List<UserCardsDTO> promoCardsDTO = promoCards.stream()
+				.map(this.userCardsMapper::toDTO)
+				.toList();
+		
+		updatedCards.setCards(promoCardsDTO);
+		
+		this.cardUserCollectionService.updateUserCollection("test@test.com", "PROMO", updatedCards);
+		
+		List<UserCards> updatedPromoCards = this.userCardsRepository.findByCardUserCollectionAndCategory(collection_test, CardCategory.PROMO);
+		
+		assertTrue(updatedPromoCards.get(0).isHasTheCard());
+		assertTrue(updatedPromoCards.get(1).isHasTheCard());
+		assertTrue(updatedPromoCards.get(2).isHasTheCard());
+		assertTrue(updatedPromoCards.get(3).isHasTheCard());
+		assertTrue(updatedPromoCards.get(4).isHasTheCard());
+		assertTrue(!updatedPromoCards.get(5).isHasTheCard());
 		
 		
 		
