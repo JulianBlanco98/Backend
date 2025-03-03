@@ -121,7 +121,15 @@ public class CardUserCollectionServiceImpl implements CardUserCollectionService{
 				.ifPresent(userCard -> userCard.setHasTheCard(updatedCard.isHasTheCard()));
 		}
 		
-		this.userCardsRepository.saveAll(userCardsList);
+//		this.userCardsRepository.saveAll(userCardsList);
+		
+		try {
+		    this.userCardsRepository.saveAll(userCardsList);
+		} catch (Exception e) {
+		    log.error("Error al guardar cartas: ", e);
+		    throw e;
+		}
+
 		
 		return "Coleccion guardada correctamente";
 	}

@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -13,6 +14,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.Backend.Model.CardUserCollection;
 import com.Backend.Model.Pokemon;
@@ -171,10 +173,20 @@ public class BackendApplication_CardUserCollection_Test {
 		
 	}
 	
+	@Transactional
 	@Test
 	void test_updateCollection() {
 		ListCardsUserCardsUpdateDTO updatedCards = new ListCardsUserCardsUpdateDTO();
-		List<UserCards> promoCards = this.userCardsRepository.findByCardUserCollectionAndCategory(collection_test, CardCategory.PROMO);
+//		List<UserCards> promoCards = this.userCardsRepository.findByCardUserCollectionAndCategory(collection_test, CardCategory.PROMO);
+		List<UserCards> promoCards = new ArrayList<>();
+		try {
+			promoCards = this.userCardsRepository.findByCardUserCollectionAndCategory(collection_test, CardCategory.PROMO);
+		    log.info("Cartas recuperadas: {}", promoCards.size());
+		} catch (Exception e) {
+		    log.error("Error al recuperar cartas: ", e);
+		}
+		
+		assertTrue(promoCards.size() >= 6);
 		
 		// 5 primeras a true
 		promoCards.get(0).setHasTheCard(true);
@@ -193,14 +205,15 @@ public class BackendApplication_CardUserCollection_Test {
 		
 		List<UserCards> updatedPromoCards = this.userCardsRepository.findByCardUserCollectionAndCategory(collection_test, CardCategory.PROMO);
 		
+		assertTrue(promoCards.size() >= 6);
+		
+		
 		assertTrue(updatedPromoCards.get(0).isHasTheCard());
 		assertTrue(updatedPromoCards.get(1).isHasTheCard());
 		assertTrue(updatedPromoCards.get(2).isHasTheCard());
 		assertTrue(updatedPromoCards.get(3).isHasTheCard());
 		assertTrue(updatedPromoCards.get(4).isHasTheCard());
-		assertTrue(!updatedPromoCards.get(5).isHasTheCard());
-		
-		
+		assertTrue(!updatedPromoCards.get(5).isHasTheCard());		
 		
 	}
 	
