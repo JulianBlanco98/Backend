@@ -1,9 +1,5 @@
 package com.Backend;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -37,6 +33,8 @@ import com.Backend.mapper.UserMapper;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 @Slf4j
 @SpringBootTest
@@ -207,7 +205,7 @@ public class BackendApplication_CardUserCollection_Test {
 		for(int i=0; i< 5; i++) {
 			assertTrue(updatedPromoCards.get(i).isHasTheCard());
 		}
-		assertTrue(!updatedPromoCards.get(5).isHasTheCard(), "La carta 5 tiene que ser falsa");		
+		assertFalse(updatedPromoCards.get(5).isHasTheCard());
 		
 	}
 	

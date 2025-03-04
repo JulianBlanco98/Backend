@@ -18,8 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.Backend.Service.CardUserCollectionService;
 import com.Backend.dto.ListCardsUserCardsUpdateDTO;
 import com.Backend.dto.PokemonCollectionDTO;
-import com.Backend.dto.UserCardsDTO;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
