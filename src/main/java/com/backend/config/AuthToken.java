@@ -35,7 +35,7 @@ public class AuthToken extends OncePerRequestFilter{
 		
 		// Excluir las rutas específicas
 	    String path = request.getRequestURI();
-	    if (path.equals("/pokemonTGC/users/login") || path.equals("/pokemonTGC/users")) {
+	    if (path.startsWith("/pokemonTGC/users")) {
 	        filterChain.doFilter(request, response); // Dejar pasar sin filtro de autenticación
 	        return;
 	    }
