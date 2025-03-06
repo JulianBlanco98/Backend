@@ -30,9 +30,7 @@ public class UserServiceImpl implements UserService{
 	@Override
 	public UserDTO findByEmail(final String email) {
 		
-//		return userRepository.findByEmail(email).orElseThrow(() -> new EntityNotFoundException("Usuario con email " + email + " no encontrado"));
-		return this.userMapper.entityToUserDTO(this.userRepository.findByEmail(email).orElseThrow(() -> new EntityNotFoundException("Usuario con email " + email + " no encontrado")));		
-		
+		return this.userMapper.entityToUserDTO(this.userRepository.findByEmail(email).orElseThrow(() -> new EntityNotFoundException("Usuario con email " + email + " no encontrado")));
 	}
 
 	@Override

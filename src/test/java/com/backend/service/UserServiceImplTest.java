@@ -11,14 +11,16 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.jdbc.Sql;
 
 import java.util.Date;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-
+@Sql(scripts = {"/sql/clean_user_database.sql", "/sql/user_data.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_CLASS)
 @SpringBootTest()
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @ActiveProfiles("test")
@@ -27,6 +29,9 @@ class UserServiceImplTest {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
     private UserDTO userDTO_test;
     private UserDTO userCorrectLoginDTO;
@@ -50,14 +55,11 @@ class UserServiceImplTest {
         userCorrectLoginDTO.setDateOfBirth(new Date());
         userCorrectLoginDTO.setRol(User.Role.user);
         userCorrectLoginDTO.setPassword("hashedPassword8");
-
-
-
     }
 
     @AfterEach
     void tearDown() {
-
+        this.jdbcTemplate.execute("DELETE FROM card_user_collection");
     }
 
     @Test
