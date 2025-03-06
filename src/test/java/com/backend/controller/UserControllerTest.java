@@ -3,7 +3,6 @@ package com.backend.controller;
 import com.backend.dto.LoginUserDTO;
 import com.backend.dto.UserDTO;
 import com.backend.model.User;
-import com.backend.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,19 +32,7 @@ class UserControllerTest {
     private MockMvc mockMvc;
 
     @Autowired
-    private UserService userService;
-
-    @Autowired
     private ObjectMapper objectMapper;
-
-
-    /*@BeforeEach
-    void setUp() {
-    }
-
-    @AfterEach
-    void tearDown() {
-    }*/
 
     @Test
     void getUserByEmail() throws Exception{
@@ -73,17 +60,6 @@ class UserControllerTest {
         inputUserDTO.setDateOfBirth(new Date());
         inputUserDTO.setRol(User.Role.user);
         inputUserDTO.setPassword("testprueba");
-
-        // Usuario que devuelve el servicio de registerUser
-        /*UserDTO outputUserDTO = new UserDTO();
-        outputUserDTO.setEmail(inputUserDTO.getEmail());
-        outputUserDTO.setUserName(inputUserDTO.getUserName());
-        outputUserDTO.setLastName(inputUserDTO.getLastName());
-        outputUserDTO.setNickName(inputUserDTO.getNickName());
-        outputUserDTO.setDateOfBirth(inputUserDTO.getDateOfBirth());
-        outputUserDTO.setPassword(inputUserDTO.getPassword());
-*/
-
 
         // Ejecutar la llamada HTTP Post
         this.mockMvc.perform(post("/pokemonTGC/users")
