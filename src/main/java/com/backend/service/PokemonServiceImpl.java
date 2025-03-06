@@ -29,10 +29,6 @@ public class PokemonServiceImpl implements PokemonService{
 		
 		
 		List<Pokemon> pokemons = this.pokemonRepository.findAll();
-		if(pokemons.isEmpty()) {
-			throw new EntityNotFoundException("la tabla de Pokémon está vacía");
-		}
-	
 		return pokemons.stream()
 				.map(this.pokemonMapper::entityToPokemonDTO)
 				.toList();
@@ -46,7 +42,6 @@ public class PokemonServiceImpl implements PokemonService{
 		if(pokemons.isEmpty()) {
 			throw new EntityNotFoundException("No se encontro ningún pokemon con este nombre: " + namePokemon);
 		}
-		
 	    return pokemons.stream()
 	            .map(this.pokemonMapper::entityToPokemonDTO)
 	            .toList();
