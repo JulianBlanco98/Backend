@@ -1,28 +1,22 @@
 package com.backend.controller;
 
+import com.backend.dto.LoginUserDTO;
 import com.backend.dto.UserDTO;
-import com.backend.mapper.UserMapper;
 import com.backend.model.User;
 import com.backend.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Date;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -78,7 +72,7 @@ class UserControllerTest {
         inputUserDTO.setNickName("nickDTO");
         inputUserDTO.setDateOfBirth(new Date());
         inputUserDTO.setRol(User.Role.user);
-        inputUserDTO.setPassword("userDTOPassword");
+        inputUserDTO.setPassword("testprueba");
 
         // Usuario que devuelve el servicio de registerUser
         /*UserDTO outputUserDTO = new UserDTO();
@@ -106,7 +100,19 @@ class UserControllerTest {
     }
 
     @Test
-    void loginUser() {
+    void loginUser() throws Exception{
         // prueba para ver si funciona el git en intelij
+        LoginUserDTO inputLoginUserDTO = new LoginUserDTO();
+        inputLoginUserDTO.setEmail("test10@test.com");
+        inputLoginUserDTO.setPassword("testprueba");
+
+        // Ejecutar la llamada POST
+        this.mockMvc.perform(post("/pokemonTGC/users/login")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(inputLoginUserDTO)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.message").value("Bienvenido nick10 !"))
+                .andExpect(jsonPath("$.token").isNotEmpty())
+                .andExpect(jsonPath("$.token").isString());
     }
 }
