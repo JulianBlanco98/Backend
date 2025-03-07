@@ -50,7 +50,7 @@ class UserControllerTest {
     void getUserByEmail() throws Exception{
         final String email = "test1@test.com";
 
-        // Ejecutar la llamada HTTP Get
+        // Ejecutar la llamada HTTP --> Get
         this.mockMvc.perform(get("/pokemonTGC/users/{email}", email))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.message").value("Usuario encontrado"))
@@ -73,7 +73,7 @@ class UserControllerTest {
         inputUserDTO.setRol(User.Role.user);
         inputUserDTO.setPassword("testprueba");
 
-        // Ejecutar la llamada HTTP Post
+        // Ejecutar la llamada HTTP --> Post
         this.mockMvc.perform(post("/pokemonTGC/users")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(inputUserDTO)))
@@ -94,7 +94,7 @@ class UserControllerTest {
         inputLoginUserDTO.setEmail("test10@test.com");
         inputLoginUserDTO.setPassword("testprueba");
 
-        // Ejecutar la llamada POST
+        // Ejecutar la llamada --> POST
         this.mockMvc.perform(post("/pokemonTGC/users/login")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(inputLoginUserDTO)))
