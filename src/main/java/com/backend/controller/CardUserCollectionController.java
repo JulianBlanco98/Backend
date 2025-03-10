@@ -94,9 +94,9 @@ public class CardUserCollectionController {
 //		} catch (Exception e) {
 //		    log.error("Error al convertir el requestBody a JSON", e);
 //		}
-		String update = this.cardUserCollectionService.updateUserCollection(userEmail, collectionSet, requestBody);
+		int update = this.cardUserCollectionService.updateUserCollection(userEmail, collectionSet, requestBody);
 		Map<String, Object> response = new HashMap<>();
-		response.put("message", update);
+		response.put("message", "Colección actualizada correctamente "+ update);
 		return ResponseEntity.status(HttpStatus.OK).body(response);
 		
 	}

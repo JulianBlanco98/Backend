@@ -19,6 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -99,31 +100,30 @@ public class CardUserCollectionServiceImpl implements CardUserCollectionService 
     }
 
     @Override
-    public String updateUserCollection(String userEmail, String collectionSet, ListCardsUserCardsUpdateDTO updatedCards) {
+    public int updateUserCollection(String userEmail, String collectionSet, ListCardsUserCardsUpdateDTO updatedCards) {
 
         User user = this.getUserByEmail(userEmail);
         CardUserCollection cardUserCollection = this.getUserCollection(user);
         List<UserCards> userCardsList = this.userCardsRepository.findByCardUserCollectionAndCategory(cardUserCollection, getCategory(collectionSet));
 
-
+        AtomicInteger update = new AtomicInteger(0);
         for (UserCardsDTO updatedCard : updatedCards.getCards()) {
             userCardsList.stream()
                     .filter(userCard -> userCard.getPokemon().getIdPokemon().equals(updatedCard.getCardId()))
                     .findFirst()
-                    .ifPresent(userCard -> userCard.setHasTheCard(updatedCard.isHasTheCard()));
+                    .ifPresent(userCard -> {
+                        userCard.setHasTheCard(updatedCard.isHasTheCard());
+                        update.getAndIncrement();
+                    });
         }
 
-//		this.userCardsRepository.saveAll(userCardsList);
+        if(update.get() > 0) {
+		    this.userCardsRepository.saveAll(userCardsList);
 
-        try {
-            this.userCardsRepository.saveAll(userCardsList);
-        } catch (Exception e) {
-            log.error("Error al guardar cartas: ", e);
-            throw e;
         }
 
 
-        return "Coleccion guardada correctamente";
+        return update.get();
     }
 
     private User getUserByEmail(String userEmail) {

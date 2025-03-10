@@ -14,4 +14,6 @@ VALUES
 (6, 1, 'PROMO-014', 'PROMO', 0),
 (7, 1, 'PROMO-019', 'PROMO', 0),
 (8, 1, 'PROMO-029', 'PROMO', 0),
-(9, 1, 'PROMO-039', 'PROMO', 0);
+(9, 1, 'PROMO-039', 'PROMO', 0),
+(10, 3, 'A1a-078', 'Mythical', 0),
+(11, 3, 'A1a-086', 'Mythical', 0);

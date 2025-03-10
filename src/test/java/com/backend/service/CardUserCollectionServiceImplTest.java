@@ -1,6 +1,8 @@
 package com.backend.service;
 
+import com.backend.dto.ListCardsUserCardsUpdateDTO;
 import com.backend.dto.PokemonCollectionDTO;
+import com.backend.dto.UserCardsDTO;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -12,7 +14,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.jdbc.Sql;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -72,39 +76,6 @@ class CardUserCollectionServiceImplTest {
         assertEquals(expectedCards, cardsInit, "Cantidad de cartas incoorecta para la expansion: " + collection);
     }
 
-    /*
-    @Test
-    void initializeCollection_Genetic() {
-        String email = "test1@test.com";
-        String collection = "Genetic";
-        int cardsInit = this.cardUserCollectionService.initializeCollection(email, collection);
-        assertEquals(2, cardsInit, "Hay 2 cartas en la expansión de Genetic en la BD de pruebas");
-    }
-
-    @Test
-    void initializeCollection_Mythical() {
-        String email = "test1@test.com";
-        String collection = "Mythical";
-        int cardsInit = this.cardUserCollectionService.initializeCollection(email, collection);
-        assertEquals(2, cardsInit, "Hay 2 cartas en la expansión de Mythical en la BD de pruebas");
-    }
-
-    @Test
-    void initializeCollection_Smackdown() {
-        String email = "test1@test.com";
-        String collection = "Smackdown";
-        int cardsInit = this.cardUserCollectionService.initializeCollection(email, collection);
-        assertEquals(1, cardsInit, "Hay 2 cartas en la expansión de Smackdown en la BD de pruebas");
-    }
-
-    @Test
-    void initializeCollection_Promo() {
-        String email = "test1@test.com";
-        String collection = "PROMO";
-        int cardsInit = this.cardUserCollectionService.initializeCollection(email, collection);
-        assertEquals(4, cardsInit, "Hay 2 cartas en la expansión de PROMO en la BD de pruebas");
-    }*/
-
     @Test
     void getUserExpansionCards() {
         String email = "test10@test.com";
@@ -116,7 +87,31 @@ class CardUserCollectionServiceImplTest {
 
     }
 
+    @Transactional
     @Test
     void updateUserCollection() {
+        String email = "test2@test.com";
+        String collection = "Mythical";
+        ListCardsUserCardsUpdateDTO updatedCards = new ListCardsUserCardsUpdateDTO();
+        List<UserCardsDTO> userCards = new ArrayList<>();
+        UserCardsDTO userCard1 = new UserCardsDTO(); // Aeodactyl Ex
+        userCard1.setCardId("A1a-078");
+        userCard1.setHasTheCard(true);
+        UserCardsDTO userCard2 = new UserCardsDTO(); // Mew Ex
+        userCard2.setCardId("A1a-086");
+        userCard2.setHasTheCard(true);
+        userCards.add(userCard1);
+        userCards.add(userCard2);
+        updatedCards.setCards(userCards);
+
+        int update = this.cardUserCollectionService.updateUserCollection(email, collection, updatedCards);
+        assertTrue(update != 0, "Tiene que haberse actualizado correctamente");
+
+        List<PokemonCollectionDTO> cards = this.cardUserCollectionService.getUserExpansionCards(email, collection);
+        assertTrue(cards.get(0).isHasTheCard(), "la primera carta ahora tiene que ser true");
+        assertTrue(cards.get(1).isHasTheCard(), "la segunda carta ahora tiene que ser true");
+
+
+
     }
 }
