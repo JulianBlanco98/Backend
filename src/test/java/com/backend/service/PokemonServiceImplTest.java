@@ -18,7 +18,7 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@Sql(scripts = {"/sql/clean_pokemon_database.sql", "/sql/pokemon_data.sql"})
+@Sql(scripts = {"/sql/clean_cardUserCollection_database.sql", "/sql/clean_pokemon_database.sql", "/sql/pokemon_data.sql"})
 @SpringBootTest()
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @ActiveProfiles("test")

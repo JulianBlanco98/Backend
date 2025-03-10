@@ -15,7 +15,7 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
-@Sql(scripts = {"/sql/clean_user_database.sql", "/sql/clean_pokemon_database.sql" ,"/sql/user_data.sql", "/sql/pokemon_data.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_CLASS)
+@Sql(scripts = {"/sql/clean_cardUserCollection_database.sql", "/sql/clean_pokemon_database.sql" , "/sql/clean_user_database.sql", "/sql/user_data.sql", "/sql/pokemon_data.sql", "/sql/cardUserCollection_data.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_CLASS)
 @SpringBootTest()
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @ActiveProfiles("test")
@@ -37,5 +37,19 @@ public class H2DatabaseTest {
         List<Map<String, Object>> pokemons = this.jdbcTemplate.queryForList("SELECT * FROM pokemons");
         System.out.println("Pokemons en H2: " + pokemons);
         assertFalse(pokemons.isEmpty());
+    }
+
+    @Test
+    void verifyCardUserCollectioncardHaveData() {
+        List<Map<String, Object>> collection = this.jdbcTemplate.queryForList("SELECT * FROM card_user_collection");
+        System.out.println("Collection en H2: " + collection);
+        assertFalse(collection.isEmpty());
+    }
+
+    @Test
+    void verifyUserCardcardHaveData() {
+        List<Map<String, Object>> userCards = this.jdbcTemplate.queryForList("SELECT * FROM user_cards");
+        System.out.println("Usercards en H2: " + userCards);
+        assertFalse(userCards.isEmpty());
     }
 }
