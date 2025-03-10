@@ -59,7 +59,7 @@ class UserServiceImplTest {
 
     @AfterEach
     void tearDown() {
-        this.jdbcTemplate.execute("DELETE FROM card_user_collection");
+        // this.jdbcTemplate.execute("DELETE FROM card_user_collection");
     }
 
     @Test

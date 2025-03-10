@@ -60,10 +60,11 @@ public class CardUserCollectionController {
 	
 		// 2. Inicializar la colección según el parámetro
 		
-		String init = this.cardUserCollectionService.initializeCollection(userEmail, collectionSet);
+		int cardsCount = this.cardUserCollectionService.initializeCollection(userEmail, collectionSet);
 		Map<String, Object> response = new HashMap<>();
-		response.put("message", init);
+		response.put("message", "La expansion " + collectionSet + " se ha inicializado correctamente");
 		response.put("initialized", true);
+		response.put("cardsCount", cardsCount);
 		
 		return ResponseEntity.status(201).body(response);
 	}

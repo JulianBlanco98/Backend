@@ -43,7 +43,7 @@ public class CardUserCollectionServiceImpl implements CardUserCollectionService 
 
 
     @Override
-    public String initializeCollection(String userEmail, String collectionSet) {
+    public int initializeCollection(String userEmail, String collectionSet) {
 
         User user = this.getUserByEmail(userEmail);
         CardUserCollection cardUserCollection = this.getUserCollection(user);
@@ -51,12 +51,12 @@ public class CardUserCollectionServiceImpl implements CardUserCollectionService 
         // 4. Buscar por setId
         List<Pokemon> pokemonCollection = this.pokemonRepository.findBySetId(getSetId(collectionSet));
 
-        log.info("Tamaño de la expansion de Genetic: {} = 286", pokemonCollection.size());
+        // log.info("Tamaño de la expansion de Genetic: {} = 286", pokemonCollection.size());
 
 
-        if (pokemonCollection.isEmpty()) {
+        /*if (pokemonCollection.isEmpty()) {
             throw new EntityNotFoundException("No hay cartas disponibles para la colección " + collectionSet);
-        }
+        }*/
 
         // Crear las userCards y asignarlas a la colección
         List<UserCards> userCards = pokemonCollection.stream().map(pokemon -> {
@@ -70,8 +70,7 @@ public class CardUserCollectionServiceImpl implements CardUserCollectionService 
         }).toList();
 
         this.userCardsRepository.saveAll(userCards);
-
-        return "La expansion " + collectionSet + " se ha inicializado correctamente";
+        return userCards.size();
     }
 
     @Override
@@ -81,9 +80,9 @@ public class CardUserCollectionServiceImpl implements CardUserCollectionService 
 
         // Recuperar las usercards dependiendo del collectionSet
         List<UserCards> userCardsList = this.userCardsRepository.findByCardUserCollectionAndCategory(cardUserCollection, getCategory(collectionSet));
-        if (userCardsList.isEmpty()) {
+        /*if (userCardsList.isEmpty()) {
             throw new EntityNotFoundException("No hay cartas en la categoría " + collectionSet + " para este usuario.");
-        }
+        }*/
 
         log.info("Se encontraron {} cartas en la expansión {}", userCardsList.size(), collectionSet);
 
@@ -105,9 +104,7 @@ public class CardUserCollectionServiceImpl implements CardUserCollectionService 
         User user = this.getUserByEmail(userEmail);
         CardUserCollection cardUserCollection = this.getUserCollection(user);
         List<UserCards> userCardsList = this.userCardsRepository.findByCardUserCollectionAndCategory(cardUserCollection, getCategory(collectionSet));
-        if (userCardsList.isEmpty()) {
-            throw new EntityNotFoundException("No hay cartas en la categoría " + collectionSet + " para este usuario.");
-        }
+        
 
         for (UserCardsDTO updatedCard : updatedCards.getCards()) {
             userCardsList.stream()
