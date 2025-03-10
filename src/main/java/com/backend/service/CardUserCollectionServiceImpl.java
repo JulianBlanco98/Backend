@@ -104,7 +104,7 @@ public class CardUserCollectionServiceImpl implements CardUserCollectionService 
         User user = this.getUserByEmail(userEmail);
         CardUserCollection cardUserCollection = this.getUserCollection(user);
         List<UserCards> userCardsList = this.userCardsRepository.findByCardUserCollectionAndCategory(cardUserCollection, getCategory(collectionSet));
-        
+
 
         for (UserCardsDTO updatedCard : updatedCards.getCards()) {
             userCardsList.stream()

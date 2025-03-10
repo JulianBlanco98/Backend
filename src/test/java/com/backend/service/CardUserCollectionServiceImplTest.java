@@ -4,6 +4,8 @@ import com.backend.dto.PokemonCollectionDTO;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -38,7 +40,7 @@ class CardUserCollectionServiceImplTest {
     @Test
     void isCollectionInitialized_NotInitialized() {
 
-        String email = "test10@test.com";
+        String email = "test2@test.com";
         String collection = "Smackdown";
         assertFalse(this.cardUserCollectionService.isCollectionInitialized(email, collection));
     }
@@ -58,14 +60,50 @@ class CardUserCollectionServiceImplTest {
         });
     }
 
-    // Hacer un caso para cada expansion (4)
+    @ParameterizedTest
+    @CsvSource({
+            "test1@test.com, Genetic, 2",
+            "test1@test.com, Mythical, 2",
+            "test1@test.com, Smackdown, 1",
+            "test1@test.com, PROMO, 4"
+    })
+    void initializeCollection(String email, String collection, int expectedCards) {
+        int cardsInit = this.cardUserCollectionService.initializeCollection(email, collection);
+        assertEquals(expectedCards, cardsInit, "Cantidad de cartas incoorecta para la expansion: " + collection);
+    }
+
+    /*
     @Test
-    void initializeCollection() {
+    void initializeCollection_Genetic() {
+        String email = "test1@test.com";
+        String collection = "Genetic";
+        int cardsInit = this.cardUserCollectionService.initializeCollection(email, collection);
+        assertEquals(2, cardsInit, "Hay 2 cartas en la expansión de Genetic en la BD de pruebas");
+    }
+
+    @Test
+    void initializeCollection_Mythical() {
         String email = "test1@test.com";
         String collection = "Mythical";
         int cardsInit = this.cardUserCollectionService.initializeCollection(email, collection);
         assertEquals(2, cardsInit, "Hay 2 cartas en la expansión de Mythical en la BD de pruebas");
     }
+
+    @Test
+    void initializeCollection_Smackdown() {
+        String email = "test1@test.com";
+        String collection = "Smackdown";
+        int cardsInit = this.cardUserCollectionService.initializeCollection(email, collection);
+        assertEquals(1, cardsInit, "Hay 2 cartas en la expansión de Smackdown en la BD de pruebas");
+    }
+
+    @Test
+    void initializeCollection_Promo() {
+        String email = "test1@test.com";
+        String collection = "PROMO";
+        int cardsInit = this.cardUserCollectionService.initializeCollection(email, collection);
+        assertEquals(4, cardsInit, "Hay 2 cartas en la expansión de PROMO en la BD de pruebas");
+    }*/
 
     @Test
     void getUserExpansionCards() {
