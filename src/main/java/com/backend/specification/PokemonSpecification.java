@@ -83,10 +83,10 @@ public class PokemonSpecification implements Specification<Pokemon> {
                     case "sortOrder": // Aplicar ordenación
                         String sortOrder = value.toString().toUpperCase();
                         if (sortOrder.equals("ASC")) {
-                            query.orderBy(cb.asc(root.get("setId"))); // Ordena por setId
+                            query.orderBy(cb.asc(root.get("idNumber"))); //, cb.asc(root.get("idNumber"))); // Ordena por setId y luego por idNumber
                         } 
                         else {
-                            query.orderBy(cb.desc(root.get("setId")));
+                            query.orderBy(cb.desc(root.get("idNumber"))); // cb.desc(root.get("idNumber"))); // Ordena por setId y luego por idNumber
                         }
                         break;
                 }

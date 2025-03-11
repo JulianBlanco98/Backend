@@ -217,6 +217,7 @@ class PokemonServiceImplTest {
         assertEquals("PROMO-039", expected.get(8).getIdPokemon(), "9: PROMO-039 (Skarmory)");
 
 
+
     }
 
     @Transactional
@@ -227,11 +228,15 @@ class PokemonServiceImplTest {
 
         final List<PokemonDTO> expected = this.pokemonService.findByFilters(filterPokemon);
         assertNotNull(expected, "Tienen que estar los 9 pokemons");
-        assertEquals("A1-004", expected.get(0).getIdPokemon(), "1 Id: A1-004");
-        assertEquals("A1-007", expected.get(1).getIdPokemon(), "2 Id: A1-007");
-        assertEquals("A1a-078", expected.get(2).getIdPokemon(), "3 Id: A1a-078");
-        assertEquals("A1a-086", expected.get(3).getIdPokemon(), "4 Id: A1a-086");
-
+        assertEquals("A1-004", expected.get(0).getIdPokemon(), "1 Id: A1-004 (Venusaur Ex)");
+        assertEquals("A1-007", expected.get(1).getIdPokemon(), "2 Id: A1-007 (Butterfree)");
+        assertEquals("PROMO-014", expected.get(2).getIdPokemon(), "3: PROMO-014 (Lapras Ex)");
+        assertEquals("PROMO-019", expected.get(3).getIdPokemon(), "4: PROMO-019 (Greninja)");
+        assertEquals("PROMO-029", expected.get(4).getIdPokemon(), "5: PROMO-029 (Blastoise)");
+        assertEquals("A2-033", expected.get(5).getIdPokemon(), "6: A2-033 (Mamoswine)");
+        assertEquals("PROMO-039", expected.get(6).getIdPokemon(), "7: PROMO-039 (Skarmory)");
+        assertEquals("A1a-078", expected.get(7).getIdPokemon(), "8 Id: A1a-078 (Aerodactyl Ex)");
+        assertEquals("A1a-086", expected.get(8).getIdPokemon(), "9 Id: A1a-086 (Mew Ex)");
     }
 
     @Transactional
@@ -246,11 +251,16 @@ class PokemonServiceImplTest {
         }
 
         /* Cambiar el Specification para que el orden sea descendiente */
-        assertNotNull(expected, "Tienen que estar los 4 pokemons");
-        /*assertEquals("A1a-078", expected.get(0).getIdPokemon(), "1 Id: A1a-086");
-        assertEquals("A1a-086", expected.get(1).getIdPokemon(), "2 Id: A1a-078");
-        assertEquals("A1-004", expected.get(2).getIdPokemon(), "3 Id: A1-007");
-        assertEquals("A1-007", expected.get(3).getIdPokemon(), "4 Id: A1-004");*/
+        assertNotNull(expected, "Tienen que estar los 9 pokemons");
+        assertEquals("A1a-086", expected.get(0).getIdPokemon(), "1 Id: A1a-086");
+        assertEquals("A1a-078", expected.get(1).getIdPokemon(), "2 Id: A1a-078");
+        assertEquals("PROMO-039", expected.get(2).getIdPokemon(), "3: PROMO-039 (Skarmory)");
+        assertEquals("A2-033", expected.get(3).getIdPokemon(), "4: A2-033 (Mamoswine)");
+        assertEquals("PROMO-029", expected.get(4).getIdPokemon(), "5: PROMO-029 (Blastoise)");
+        assertEquals("PROMO-019", expected.get(5).getIdPokemon(), "6: PROMO-019 (Greninja)");
+        assertEquals("PROMO-014", expected.get(6).getIdPokemon(), "7: PROMO-014 (Lapras Ex)");
+        assertEquals("A1-007", expected.get(7).getIdPokemon(), "8 Id: A1-007");
+        assertEquals("A1-004", expected.get(8).getIdPokemon(), "9 Id: A1-004");
 
     }
 
