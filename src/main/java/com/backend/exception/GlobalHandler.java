@@ -30,7 +30,6 @@ public class GlobalHandler {
 		else {
 			errorDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(500), exception.getMessage());						
 		}
-//		if(errorDetail == null) {}
 		return errorDetail;
 	}
 	
