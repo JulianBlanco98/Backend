@@ -3,8 +3,6 @@ package com.backend.service;
 import com.backend.dto.ListCardsUserCardsUpdateDTO;
 import com.backend.dto.PokemonCollectionDTO;
 import com.backend.dto.UserCardsDTO;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -30,16 +28,6 @@ class CardUserCollectionServiceImplTest {
 
     @Autowired
     private CardUserCollectionService cardUserCollectionService;
-
-
-
-    @BeforeEach
-    void setUp() {
-    }
-
-    @AfterEach
-    void tearDown() {
-    }
 
     @Test
     void isCollectionInitialized_NotInitialized() {
@@ -92,6 +80,19 @@ class CardUserCollectionServiceImplTest {
     void updateUserCollection() {
         String email = "test2@test.com";
         String collection = "Mythical";
+        ListCardsUserCardsUpdateDTO updatedCards = getListCardsUserCardsUpdateDTO();
+
+        int update = this.cardUserCollectionService.updateUserCollection(email, collection, updatedCards);
+        assertNotEquals(0, update, "Tiene que haberse actualizado correctamente");
+        List<PokemonCollectionDTO> cards = this.cardUserCollectionService.getUserExpansionCards(email, collection);
+        assertTrue(cards.get(0).isHasTheCard(), "la primera carta ahora tiene que ser true");
+        assertTrue(cards.get(1).isHasTheCard(), "la segunda carta ahora tiene que ser true");
+
+
+
+    }
+
+    private ListCardsUserCardsUpdateDTO getListCardsUserCardsUpdateDTO() {
         ListCardsUserCardsUpdateDTO updatedCards = new ListCardsUserCardsUpdateDTO();
         List<UserCardsDTO> userCards = new ArrayList<>();
         UserCardsDTO userCard1 = new UserCardsDTO(); // Aeodactyl Ex
@@ -103,15 +104,6 @@ class CardUserCollectionServiceImplTest {
         userCards.add(userCard1);
         userCards.add(userCard2);
         updatedCards.setCards(userCards);
-
-        int update = this.cardUserCollectionService.updateUserCollection(email, collection, updatedCards);
-        assertTrue(update != 0, "Tiene que haberse actualizado correctamente");
-
-        List<PokemonCollectionDTO> cards = this.cardUserCollectionService.getUserExpansionCards(email, collection);
-        assertTrue(cards.get(0).isHasTheCard(), "la primera carta ahora tiene que ser true");
-        assertTrue(cards.get(1).isHasTheCard(), "la segunda carta ahora tiene que ser true");
-
-
-
+        return updatedCards;
     }
 }
