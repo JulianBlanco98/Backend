@@ -87,13 +87,6 @@ public class CardUserCollectionController {
 	public ResponseEntity<Map<String, Object>> updateUserExpansion(@PathVariable final String collectionSet, @AuthenticationPrincipal UserDetails userDetails, @RequestBody ListCardsUserCardsUpdateDTO requestBody) {
 		String userEmail = userDetails.getUsername();
 		log.info("Verificando si la expansión {} está inicializada para el usuario {}", collectionSet, userEmail);
-		// Imprimir el requestBody en la consola
-//	    System.out.println("Request Body: " + requestBody.toString());
-//		try {
-//		    log.info("Request Body: {}", new ObjectMapper().writeValueAsString(requestBody));
-//		} catch (Exception e) {
-//		    log.error("Error al convertir el requestBody a JSON", e);
-//		}
 		int update = this.cardUserCollectionService.updateUserCollection(userEmail, collectionSet, requestBody);
 		Map<String, Object> response = new HashMap<>();
 		response.put("message", "Colección actualizada correctamente "+ update);
