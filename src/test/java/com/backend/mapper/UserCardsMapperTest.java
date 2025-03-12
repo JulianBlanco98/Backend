@@ -52,6 +52,22 @@ class UserCardsMapperTest {
     }
 
     @Test
+    void toDTO_CardUserCollectionIsNull() {
+        UserCards userCards = new UserCards();
+        userCards.setCardUserCollection(null);
+        UserCardsDTO userCardsDTO = this.userCardsMapper.toDTO(userCards);
+        assertNull(userCardsDTO.getUser_collection_id(), "Tiene que ser null");
+    }
+
+    @Test
+    void toDTO_PokemonIdPokemonIsNull() {
+        UserCards userCards = new UserCards();
+        userCards.setPokemon(null);
+        UserCardsDTO userCardsDTO = this.userCardsMapper.toDTO(userCards);
+        assertNull(userCardsDTO.getCardId(), "Tiene que ser null el IDPokemon");
+    }
+
+    @Test
     void toDTO() {
         Pokemon pokemon1;
         pokemon1 = new Pokemon();
