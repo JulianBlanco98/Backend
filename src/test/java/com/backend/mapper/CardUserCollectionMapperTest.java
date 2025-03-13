@@ -49,6 +49,23 @@ class CardUserCollectionMapperTest {
     }
 
     @Test
+    void toDTO_UserIsNull() {
+        CardUserCollection cardUserCollection = new CardUserCollection();
+        cardUserCollection.setUser(null);
+        CardUserCollectionDTO cardUserCollectionDTO = this.cardUserCollectionMapper.toDTO(cardUserCollection);
+        assertNull(cardUserCollectionDTO.getUserEmail(), "Tiene que ser nulo");
+    }
+    @Test
+    void toDTO_EmailIsNull() {
+        CardUserCollection cardUserCollection = new CardUserCollection();
+        User user = new User();
+        user.setEmail(null);
+        cardUserCollection.setUser(user);
+        CardUserCollectionDTO cardUserCollectionDTO = this.cardUserCollectionMapper.toDTO(cardUserCollection);
+        assertNull(cardUserCollectionDTO.getUserEmail(), "Tiene que ser nulo");
+    }
+
+    @Test
     void toDTO() {
         User user = new User();
         user.setEmail("test_user@test.com");

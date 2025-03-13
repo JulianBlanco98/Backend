@@ -1,5 +1,6 @@
 package com.backend.service;
 
+import com.backend.dto.DashboardUserCollectionDTO;
 import com.backend.model.CardUserCollection;
 import com.backend.model.Pokemon;
 import com.backend.model.User;
@@ -124,6 +125,15 @@ public class CardUserCollectionServiceImpl implements CardUserCollectionService 
 
 
         return update.get();
+    }
+
+    @Override
+    public DashboardUserCollectionDTO getDashboardUserCollection(String userEmail) {
+        User user = this.getUserByEmail(userEmail);
+        CardUserCollection cardUserCollection = this.getUserCollection(user);
+        List<UserCards> userCards = this.userCardsRepository.findByCardUserCollection(cardUserCollection);
+        
+
     }
 
     private User getUserByEmail(String userEmail) {

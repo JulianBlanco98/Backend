@@ -68,6 +68,14 @@ class UserCardsMapperTest {
     }
 
     @Test
+    void toDTO_IDIsNull() {
+        UserCards userCards = new UserCards();
+        userCards.setId(null);
+        UserCardsDTO userCardsDTO = this.userCardsMapper.toDTO(userCards);
+        assertNull(userCardsDTO.getId(), "Tiene que ser null");
+    }
+
+    @Test
     void toDTO() {
         Pokemon pokemon1;
         pokemon1 = new Pokemon();
