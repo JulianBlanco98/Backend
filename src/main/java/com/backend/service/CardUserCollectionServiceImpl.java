@@ -82,13 +82,9 @@ public class CardUserCollectionServiceImpl implements CardUserCollectionService 
 
         // Recuperar las usercards dependiendo del collectionSet
         List<UserCards> userCardsList = this.userCardsRepository.findByCardUserCollectionAndCategory(cardUserCollection, getCategory(collectionSet));
-        /*if (userCardsList.isEmpty()) {
-            throw new EntityNotFoundException("No hay cartas en la categoría " + collectionSet + " para este usuario.");
-        }*/
-
         log.info("Se encontraron {} cartas en la expansión {}", userCardsList.size(), collectionSet);
 
-        List<PokemonCollectionDTO> pokemonsDTO = userCardsList.stream()
+        return userCardsList.stream()
                 .map(userCard -> {
                     PokemonCollectionDTO dto = this.pokemonMapper.toPokemonCollectionDTO(userCard.getPokemon());
                     dto.setHasTheCard(userCard.isHasTheCard()); // añadir el boolean para el model del front
@@ -96,7 +92,7 @@ public class CardUserCollectionServiceImpl implements CardUserCollectionService 
                 }).toList();
 
 
-        return pokemonsDTO;
+        // return pokemonsDTO;
 
     }
 
@@ -113,9 +109,12 @@ public class CardUserCollectionServiceImpl implements CardUserCollectionService 
                     .filter(userCard -> userCard.getPokemon().getIdPokemon().equals(updatedCard.getCardId()))
                     .findFirst()
                     .ifPresent(userCard -> {
-                        userCard.setHasTheCard(updatedCard.isHasTheCard());
-                        update.getAndIncrement();
+                        if (userCard.isHasTheCard() != updatedCard.isHasTheCard()) { // Solo cuenta si cambia
+                            userCard.setHasTheCard(updatedCard.isHasTheCard());
+                            update.getAndIncrement();
+                        }
                     });
+
         }
 
         if(update.get() > 0) {

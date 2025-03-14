@@ -1,5 +1,6 @@
 package com.backend.service;
 
+import com.backend.dto.DashboardUserCollectionDTO;
 import com.backend.dto.ListCardsUserCardsUpdateDTO;
 import com.backend.dto.PokemonCollectionDTO;
 import com.backend.dto.UserCardsDTO;
@@ -72,7 +73,24 @@ class CardUserCollectionServiceImplTest {
         assertNotNull(expected);
         assertEquals(2, expected.size(), "Hay 2 cartas en la expansión de Mythical en la BD de pruebas");
         assertEquals("A1-004", expected.get(0).getIdPokemon(), "El primer ID Pokemon es: A1-004");
+        assertTrue(expected.get(0).isHasTheCard(), "Tiene la primera carta de Genetic");
+    }
 
+    @Transactional
+    @Test
+    void updateUserCollection_NoUpdates() {
+        String email = "test10@test.com";
+        String collection = "Smackdown";
+        ListCardsUserCardsUpdateDTO updatedCards = new ListCardsUserCardsUpdateDTO();
+        List<UserCardsDTO> userCards = new ArrayList<>();
+        UserCardsDTO userCard1 = new UserCardsDTO(); // mamoswine
+        userCard1.setCardId("A2-033");
+        userCard1.setHasTheCard(true);
+        userCards.add(userCard1);
+        updatedCards.setCards(userCards);
+
+        int noUpdate = this.cardUserCollectionService.updateUserCollection(email, collection, updatedCards);
+        assertEquals(0, noUpdate, "Es 0, ya que no se ha actualizado nada");
     }
 
     @Transactional
@@ -87,7 +105,27 @@ class CardUserCollectionServiceImplTest {
         List<PokemonCollectionDTO> cards = this.cardUserCollectionService.getUserExpansionCards(email, collection);
         assertTrue(cards.get(0).isHasTheCard(), "la primera carta ahora tiene que ser true");
         assertTrue(cards.get(1).isHasTheCard(), "la segunda carta ahora tiene que ser true");
+    }
 
+    @Test
+    void DashboardUserCollectionDTO() {
+        String email = "test10@test.com";
+        DashboardUserCollectionDTO response = this.cardUserCollectionService.getDashboardUserCollection(email);
+        assertNotNull(response, "No puede ser nulo la respuesta");
+        assertEquals(2, response.getCardsGenetic(), "2 cartas de Genetic");
+        assertEquals(1, response.getCardsGeneticUser(), "1 carta de Genetic tiene el user");
+
+        assertEquals(2, response.getCardsMythical(), "2 cartas de Mythical");
+        assertEquals(1, response.getCardsMythicalUser(), "1 carta de Mythical tiene el user");
+
+        assertEquals(1, response.getCardsSmackdown(), "1 carta de smackdown");
+        assertEquals(1, response.getCardsSmackdownUser(), "1 carta de smackdown tiene el user");
+
+        assertEquals(4, response.getCardsPROMO(), "4 cartas de PROMO");
+        assertEquals(1, response.getCardsPROMOUser(), "1 carta de PROMO tiene el user");
+
+        assertEquals(9, response.getTotalCards(), "Hay un total de 9 cartas en la BD de pokemon");
+        assertEquals(4, response.getTotalCardsUser(), "El usuario tiene un total de 4 cartas");
 
 
     }
