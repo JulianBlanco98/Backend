@@ -104,6 +104,31 @@ class CardUserCollectionControllerTest {
 
     }
 
+    @Test
+    void getDashboardUserCollection() throws Exception{
+        // Cambiar de usuario para este test
+        User user = new User();
+        user.setEmail("test10@test.com"); // Nuevo usuario
+        user.setUserName("user10");
+        user.setRol(User.Role.user);
+        String newToken = "Bearer " + this.jwtService.generateToken(user);
+
+        // Ejecutar la llamada HTTP --> Get
+        this.mockMvc.perform(get("/pokemonTGC/collection/dashboard")
+                        .header("Authorization", newToken)) // Usar el nuevo token
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data.cardsGenetic").value(2)) // 2 cartas de Genetic
+                .andExpect(jsonPath("$.data.cardsGeneticUser").value(1)) // 1 carta de Genetic tiene el user
+                .andExpect(jsonPath("$.data.cardsMythical").value(2)) // 2 cartas de Mythical
+                .andExpect(jsonPath("$.data.cardsMythicalUser").value(1)) // 1 carta de Mythical tiene el user
+                .andExpect(jsonPath("$.data.cardsSmackdown").value(1)) // 1 carta de Smackdown
+                .andExpect(jsonPath("$.data.cardsSmackdownUser").value(1)) // 1 carta de Smackdown tiene el user
+                .andExpect(jsonPath("$.data.cardsPROMO").value(4)) // 4 cartas de PROMO
+                .andExpect(jsonPath("$.data.cardsPROMOUser").value(1)) // 1 carta de PROMO tiene el user
+                .andExpect(jsonPath("$.data.totalCards").value(9)) // Hay un total de 9 cartas en la BD de Pokémon
+                .andExpect(jsonPath("$.data.totalCardsUser").value(4)); // El usuario tiene un total de 4 cartas
+    }
+
     private ListCardsUserCardsUpdateDTO getListCardsUserCardsUpdateDTO() {
         ListCardsUserCardsUpdateDTO updatedCards = new ListCardsUserCardsUpdateDTO();
         List<UserCardsDTO> userCards = new ArrayList<>();
