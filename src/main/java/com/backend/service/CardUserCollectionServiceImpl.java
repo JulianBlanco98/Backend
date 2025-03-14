@@ -1,6 +1,6 @@
 package com.backend.service;
 
-import com.backend.dto.DashboardUserCollectionDTO;
+import com.backend.dto.*;
 import com.backend.model.CardUserCollection;
 import com.backend.model.Pokemon;
 import com.backend.model.User;
@@ -10,9 +10,6 @@ import com.backend.repository.CardUserCollectionRepository;
 import com.backend.repository.PokemonRepository;
 import com.backend.repository.UserCardsRepository;
 import com.backend.repository.UserRepository;
-import com.backend.dto.ListCardsUserCardsUpdateDTO;
-import com.backend.dto.PokemonCollectionDTO;
-import com.backend.dto.UserCardsDTO;
 import com.backend.mapper.PokemonMapper;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -170,6 +167,25 @@ public class CardUserCollectionServiceImpl implements CardUserCollectionService 
 
         return response;
 
+    }
+
+    @Override
+    public AccordionDTO getDeckUserCollection(String userEmail, String deck) {
+        User user = this.getUserByEmail(userEmail);
+        CardUserCollection cardUserCollection = this.getUserCollection(user);
+        List<UserCards> userCards = this.userCardsRepository.findByCardUserCollectionAndPokemon_Deck(cardUserCollection, deck);
+        log.info("Deck: {}", deck);
+        System.out.println(userCards);
+
+
+
+
+        AccordionDTO response = new AccordionDTO();
+        response.setDeckCards(userCards.size());
+
+
+
+        return response;
     }
 
     private User getUserByEmail(String userEmail) {

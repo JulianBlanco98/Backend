@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.backend.dto.AccordionDTO;
 import com.backend.dto.DashboardUserCollectionDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -104,6 +105,14 @@ public class CardUserCollectionController {
 		response.put("message", "Datos recuperados correctamente");
 		response.put("data", dashboard);
 		return ResponseEntity.status(HttpStatus.OK).body(response);
+	}
+
+	@GetMapping("/deck/{deck}")
+	public ResponseEntity getDeckUserCollection (@PathVariable final String deck, @AuthenticationPrincipal UserDetails userDetails) {
+		String userEmail = userDetails.getUsername();
+		log.info("Verificando usuario {}", userEmail);
+		AccordionDTO cards = this.cardUserCollectionService.getDeckUserCollection(userEmail, deck);
+		return ResponseEntity.status(HttpStatus.OK).body(cards);
 	}
 
 }
