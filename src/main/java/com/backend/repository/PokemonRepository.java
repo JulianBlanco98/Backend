@@ -22,7 +22,7 @@ public interface PokemonRepository extends JpaRepository<Pokemon, String>, JpaSp
 	@EntityGraph(attributePaths = {"attack", "ability", "cardsrelated"})
 	Optional<Pokemon> findByIdPokemon(String idPokemon);
 	
-	List<Pokemon> findBySetId(String set);
-	
-	
+	List<Pokemon> findBySetId(String setId);
+
+	Long countBySetId(String setId);
 }

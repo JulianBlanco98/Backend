@@ -132,7 +132,44 @@ public class CardUserCollectionServiceImpl implements CardUserCollectionService 
         User user = this.getUserByEmail(userEmail);
         CardUserCollection cardUserCollection = this.getUserCollection(user);
         List<UserCards> userCards = this.userCardsRepository.findByCardUserCollection(cardUserCollection);
-        
+
+        long totalPokemonGenetic = this.pokemonRepository.countBySetId("A1");
+        long totalPokemonMythtical = this.pokemonRepository.countBySetId("A1a");
+        long totalPokemonPROMO = this.pokemonRepository.countBySetId("PROMO");
+        long totalPokemonSmackdown = this.pokemonRepository.countBySetId("A2");
+
+        long totalCards = totalPokemonGenetic + totalPokemonMythtical + totalPokemonPROMO + totalPokemonSmackdown;
+
+        long totalPokemonGeneticUser = userCards.stream()
+                .filter(card -> card.getCategory() == CardCategory.Genetic && card.isHasTheCard())
+                .count();
+        long totalPokemonMythicalUser = userCards.stream()
+                .filter(card -> card.getCategory() == CardCategory.Mythical && card.isHasTheCard())
+                .count();
+        long totalPokemonPROMOUser = userCards.stream()
+                .filter(card -> card.getCategory() == CardCategory.PROMO && card.isHasTheCard())
+                .count();
+        long totalPokemonSmackdownUser = userCards.stream()
+                .filter(card -> card.getCategory() == CardCategory.Smackdown && card.isHasTheCard())
+                .count();
+
+        long totalCardsUser = totalPokemonGeneticUser + totalPokemonMythicalUser + totalPokemonPROMOUser + totalPokemonSmackdownUser;
+
+        DashboardUserCollectionDTO response = new DashboardUserCollectionDTO();
+        response.setCardsGenetic((int) totalPokemonGenetic);
+        response.setCardsMythical((int) totalPokemonMythtical);
+        response.setCardsPROMO((int) totalPokemonPROMO);
+        response.setCardsSmackdown((int) totalPokemonSmackdown);
+
+        response.setCardsGeneticUser((int) totalPokemonGeneticUser);
+        response.setCardsMythicalUser((int) totalPokemonMythicalUser);
+        response.setCardsPROMOUser((int) totalPokemonPROMOUser);
+        response.setCardsSmackdownUser((int) totalPokemonSmackdownUser);
+
+        response.setTotalCards((int) totalCards);
+        response.setTotalCardsUser((int) totalCardsUser);
+
+        return response;
 
     }
 

@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.backend.dto.DashboardUserCollectionDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -92,6 +93,17 @@ public class CardUserCollectionController {
 		response.put("message", "Colección actualizada correctamente "+ update);
 		return ResponseEntity.status(HttpStatus.OK).body(response);
 		
+	}
+
+	@GetMapping("/dashboard")
+	public ResponseEntity<Map<String, Object>> getDashboardUserCollection(@AuthenticationPrincipal UserDetails userDetails) {
+		String userEmail = userDetails.getUsername();
+		log.info("Verificando usuario {}", userEmail);
+		DashboardUserCollectionDTO dashboard = this.cardUserCollectionService.getDashboardUserCollection(userEmail);
+		Map<String, Object> response = new HashMap<>();
+		response.put("message", "Datos recuperados correctamente");
+		response.put("data", dashboard);
+		return ResponseEntity.status(HttpStatus.OK).body(response);
 	}
 
 }
