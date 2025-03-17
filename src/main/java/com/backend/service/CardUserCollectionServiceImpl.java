@@ -50,13 +50,6 @@ public class CardUserCollectionServiceImpl implements CardUserCollectionService 
         // 4. Buscar por setId
         List<Pokemon> pokemonCollection = this.pokemonRepository.findBySetId(getSetId(collectionSet));
 
-        // log.info("Tamaño de la expansion de Genetic: {} = 286", pokemonCollection.size());
-
-
-        /*if (pokemonCollection.isEmpty()) {
-            throw new EntityNotFoundException("No hay cartas disponibles para la colección " + collectionSet);
-        }*/
-
         // Crear las userCards y asignarlas a la colección
         List<UserCards> userCards = pokemonCollection.stream().map(pokemon -> {
             UserCards card = new UserCards();
@@ -87,10 +80,6 @@ public class CardUserCollectionServiceImpl implements CardUserCollectionService 
                     dto.setHasTheCard(userCard.isHasTheCard()); // añadir el boolean para el model del front
                     return dto;
                 }).toList();
-
-
-        // return pokemonsDTO;
-
     }
 
     @Override
@@ -174,15 +163,25 @@ public class CardUserCollectionServiceImpl implements CardUserCollectionService 
         User user = this.getUserByEmail(userEmail);
         CardUserCollection cardUserCollection = this.getUserCollection(user);
         List<UserCards> userCards = this.userCardsRepository.findByCardUserCollectionAndPokemon_Deck(cardUserCollection, deck);
-        log.info("Deck: {}", deck);
-        System.out.println(userCards);
+        long deckCardsUser = userCards.stream().filter(UserCards::isHasTheCard).count();
+        log.info("Deck: {} - Cartas encontradas: {} - Cartas del usuario: {}" , deck, userCards.size(), deckCardsUser);
 
-
-
+        // Mapear para el DTO de Pokemon Collection (filteredCards)
+        List<PokemonAccordionDTO> filteredCards = userCards.stream().map(userCard -> {
+           Pokemon pokemon = userCard.getPokemon();
+           PokemonAccordionDTO dto = new PokemonAccordionDTO();
+           dto.setIdPokemon(pokemon.getIdPokemon());
+           dto.setPokemonName(pokemon.getPokemonName());
+           dto.setHasTheCard(userCard.isHasTheCard());
+           dto.setDeck(pokemon.getDeck());
+           dto.setCollectionPocket(pokemon.getCollectionPocket());
+           return dto;
+        }).toList();
 
         AccordionDTO response = new AccordionDTO();
         response.setDeckCards(userCards.size());
-
+        response.setDeckCardsUser((int) deckCardsUser);
+        response.setCards(filteredCards);
 
 
         return response;

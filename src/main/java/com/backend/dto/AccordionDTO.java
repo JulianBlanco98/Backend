@@ -8,5 +8,5 @@ import java.util.List;
 public class AccordionDTO {
     private int deckCards;
     private int deckCardsUser;
-    private List<PokemonAccordionDTO> filteredCards;
+    private List<PokemonAccordionDTO> cards;
 }

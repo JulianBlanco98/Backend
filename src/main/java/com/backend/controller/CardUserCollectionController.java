@@ -110,7 +110,7 @@ public class CardUserCollectionController {
 	@GetMapping("/deck/{deck}")
 	public ResponseEntity getDeckUserCollection (@PathVariable final String deck, @AuthenticationPrincipal UserDetails userDetails) {
 		String userEmail = userDetails.getUsername();
-		log.info("Verificando usuario {}", userEmail);
+		//log.info("Verificando usuario {}", userEmail);
 		AccordionDTO cards = this.cardUserCollectionService.getDeckUserCollection(userEmail, deck);
 		return ResponseEntity.status(HttpStatus.OK).body(cards);
 	}
