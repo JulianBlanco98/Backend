@@ -54,6 +54,17 @@ class CardUserCollectionControllerTest {
     }
 
     @Test
+    void isCollectionInitialized_NotInit() throws Exception {
+        final String collectionSet = "Smackdown";
+        // Ejecutar la llamada HTTP --> Get
+        this.mockMvc.perform(get("/pokemonTGC/collection/{collectionSet}/initialized", collectionSet)
+                        .header("Authorization", token)) // Simular el token
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.collectionInitialized").isBoolean())
+                .andExpect(jsonPath("$.collectionInitialized").value(false));
+    }
+
+    @Test
     void isCollectionInitialized() throws Exception {
         final String collectionSet = "Mythical";
         // Ejecutar la llamada HTTP --> Get
@@ -128,6 +139,31 @@ class CardUserCollectionControllerTest {
                 .andExpect(jsonPath("$.data.totalCards").value(9)) // Hay un total de 9 cartas en la BD de Pokémon
                 .andExpect(jsonPath("$.data.totalCardsUser").value(4)); // El usuario tiene un total de 4 cartas
     }
+
+    @Test
+    void getDeckUserCollection() throws Exception {
+        // Cambiar de usuario para este test
+        User user = new User();
+        user.setEmail("test10@test.com"); // Nuevo usuario
+        user.setUserName("user10");
+        user.setRol(User.Role.user);
+        String newToken = "Bearer " + this.jwtService.generateToken(user);
+
+        String deck = "A2D";
+        // Ejecutar la llamada HTTP --> Get
+        this.mockMvc.perform(get("/pokemonTGC/collection/deck/{deck}", deck)
+                .header("Authorization", newToken))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.deckCards").isNumber())
+                .andExpect(jsonPath("$.deckCards").value(1))
+                .andExpect(jsonPath("$.deckCardsUser").isNumber())
+                .andExpect(jsonPath("$.deckCardsUser").value(1))
+                .andExpect(jsonPath("$.cards[0].idPokemon").value("A2-033"))
+                .andExpect(jsonPath("$.cards[0].pokemonName").value("Mamoswine"))
+                .andExpect(jsonPath("$.cards[0].hasTheCard").isBoolean())
+                .andExpect(jsonPath("$.cards[0].hasTheCard").value(true));
+    }
+
 
     private ListCardsUserCardsUpdateDTO getListCardsUserCardsUpdateDTO() {
         ListCardsUserCardsUpdateDTO updatedCards = new ListCardsUserCardsUpdateDTO();

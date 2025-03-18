@@ -1,9 +1,6 @@
 package com.backend.service;
 
-import com.backend.dto.DashboardUserCollectionDTO;
-import com.backend.dto.ListCardsUserCardsUpdateDTO;
-import com.backend.dto.PokemonCollectionDTO;
-import com.backend.dto.UserCardsDTO;
+import com.backend.dto.*;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -108,7 +105,7 @@ class CardUserCollectionServiceImplTest {
     }
 
     @Test
-    void DashboardUserCollectionDTO() {
+    void dashboardUserCollectionDTO() {
         String email = "test10@test.com";
         DashboardUserCollectionDTO response = this.cardUserCollectionService.getDashboardUserCollection(email);
         assertNotNull(response, "No puede ser nulo la respuesta");
@@ -126,6 +123,20 @@ class CardUserCollectionServiceImplTest {
 
         assertEquals(9, response.getTotalCards(), "Hay un total de 9 cartas en la BD de pokemon");
         assertEquals(4, response.getTotalCardsUser(), "El usuario tiene un total de 4 cartas");
+
+
+    }
+
+    @Test
+    void getDeckUserCollection() {
+        String email = "test10@test.com";
+        String deck = "A2D";
+        AccordionDTO dto = this.cardUserCollectionService.getDeckUserCollection(email, deck);
+        assertNotNull(dto, "Accordion DTO no debería de ser null");
+        assertEquals(1, dto.getCards().size(), "El usuario tiene una carta de este deck");
+        assertEquals("A2-033", dto.getCards().get(0).getIdPokemon(), "IdPokemon tiene que ser A2-033");
+        assertEquals("Mamoswine", dto.getCards().get(0).getPokemonName(), "Tiene que ser Mamoswine");
+        assertTrue(dto.getCards().get(0).isHasTheCard(), "Este usuario tiene la carta");
 
 
     }
